@@ -1,4 +1,4 @@
-/**
+﻿/**
  * generate.js
  * スコアリング済み記事リストをGemini APIに渡し、
  * 以下テンプレートと同一の構造・デザインのHTMLを生成する。
@@ -90,7 +90,7 @@ ${articleSummaries}
     <!-- SECTION 1 -->
     <section aria-labelledby="section1-heading">
       <div class="flex items-baseline justify-between mb-5">
-        <h2 id="section1-heading" class="text-xs font-bold tracking-widest text-[#6b7583] uppercase">SECTION 1 ── 今日のニュース</h2>
+        <h2 id="section1-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 1 ── 今日のニュース</h2>
         <span class="text-xs text-[#6b7583]">全★件数★件</span>
       </div>
       <div class="flex flex-col gap-4">
@@ -147,7 +147,7 @@ ${articleSummaries}
     <!-- SECTION 2 -->
     <section aria-labelledby="section2-heading">
       <div class="flex items-baseline justify-between mb-5">
-        <h2 id="section2-heading" class="text-xs font-bold tracking-widest text-[#6b7583] uppercase">SECTION 2 ── 構造図解</h2>
+        <h2 id="section2-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 2 ── 構造図解</h2>
         <span class="text-xs text-[#6b7583]">記事ごと</span>
       </div>
       <div class="flex flex-col gap-6">
@@ -196,7 +196,7 @@ ${articleSummaries}
     <!-- SECTION 3 -->
     <section aria-labelledby="section3-heading">
       <div class="flex items-baseline justify-between mb-2">
-        <h2 id="section3-heading" class="text-xs font-bold tracking-widest text-[#6b7583] uppercase">SECTION 3 ── 抽象化・概念化トレーニング</h2>
+        <h2 id="section3-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 3 ── 抽象化・概念化トレーニング</h2>
         <span class="text-xs text-[#6b7583]">全6問</span>
       </div>
       <p class="text-xs text-[#6b7583] mb-5">抽象化 ×2　概念化 ×2　アナロジー ×2</p>
@@ -575,3 +575,4 @@ ${articleSummaries}
 
   return { outDir, outPath, dates };
 }
+
