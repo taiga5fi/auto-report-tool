@@ -184,6 +184,13 @@ ${articleSummaries}
         <!-- ★繰り返しここまで。②③...と連番を変えること★ -->
 
       </div>
+
+      <!-- 今日の示唆（SECTION 2 全体まとめ） -->
+      <div class="mt-6 bg-[#1e2d3a] rounded-xl p-6 text-center">
+        <p class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">今日の示唆</p>
+        <p class="text-white text-lg sm:text-xl font-bold leading-relaxed">★今日の記事全体に共通する示唆・洞察を一文で★</p>
+      </div>
+
     </section>
 
     <!-- SECTION 3 -->
