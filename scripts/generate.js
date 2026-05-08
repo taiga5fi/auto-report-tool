@@ -50,23 +50,23 @@ ${articleSummaries}
 ### デザイン・技術要件
 - Tailwind CSS CDN（https://cdn.tailwindcss.com）を使用
 - Google Fonts: **M PLUS Rounded 1c** (400,500,700) を使用
-  - `<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">`
-  - tailwind.config: `sans: ['"M PLUS Rounded 1c"', '"Hiragino Maru Gothic ProN"', 'sans-serif']`
+  - \`<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">\`
+  - tailwind.config: \`sans: ['"M PLUS Rounded 1c"', '"Hiragino Maru Gothic ProN"', 'sans-serif']\`
 - **配色（必ず以下のカスタムカラーを使用・Tailwindのデフォルト色は使わない）**:
-  - body背景: `bg-[#f6f3ee]` テキスト: `text-[#2c3648]`
-  - ヘッダー: `bg-[#2d4a3e] text-white`
-  - ヘッダー内の日付・サブテキスト: `text-[#d1e0dc]`（暗背景上でのコントラスト確保）
-  - カード背景: `bg-white` ボーダー: `border-[#dfd6c9]`
-  - カードホバー: `hover:bg-[#f0ebe4]`
-  - フロー図ボックス: `bg-[#3d5a50] text-white`
-  - 示唆ボックス: `bg-[#2d4a3e] text-[#d1e0dc]`
-  - 考察エリア: `bg-[#edf5f2] border-[#c0d9d0]`
-  - 進捗バー: `bg-[#4a7c6f]`
-  - カテゴリバッジ: `bg-[#dceee9] text-[#3d5a50]`
-  - ボタン: `bg-[#2d4a3e] hover:bg-[#3d5a50] text-white`
-  - セクション区切り: `border-[#dfd6c9]`
-  - セクション見出し・補助テキスト（薄い文字）: `text-[#6b7583]`（白背景でのAA基準を満たすグレー）
-  - エラー文: `text-[#c53030]`、正解文: `text-[#15803d]`
+  - body背景: \`bg-[#f6f3ee]\` テキスト: \`text-[#2c3648]\`
+  - ヘッダー: \`bg-[#2d4a3e] text-white\`
+  - ヘッダー内の日付・サブテキスト: \`text-[#d1e0dc]\`（暗背景上でのコントラスト確保）
+  - カード背景: \`bg-white\` ボーダー: \`border-[#dfd6c9]\`
+  - カードホバー: \`hover:bg-[#f0ebe4]\`
+  - フロー図ボックス: \`bg-[#3d5a50] text-white\`
+  - 示唆ボックス: \`bg-[#2d4a3e] text-[#d1e0dc]\`
+  - 考察エリア: \`bg-[#edf5f2] border-[#c0d9d0]\`
+  - 進捗バー: \`bg-[#4a7c6f]\`
+  - カテゴリバッジ: \`bg-[#dceee9] text-[#3d5a50]\`
+  - ボタン: \`bg-[#2d4a3e] hover:bg-[#3d5a50] text-white\`
+  - セクション区切り: \`border-[#dfd6c9]\`
+  - セクション見出し・補助テキスト（薄い文字）: \`text-[#6b7583]\`（白背景でのAA基準を満たすグレー）
+  - エラー文: \`text-[#c53030]\`、正解文: \`text-[#15803d]\`
 
 ### 言語ルール
 - 記事タイトル・要旨・ポイントが英語の場合は**必ず日本語に翻訳**して表示する
@@ -77,7 +77,7 @@ ${articleSummaries}
 - 各カードはアコーディオン（クリックで展開）
 - カードヘッダー行: カテゴリバッジ（bg-[#dceee9] text-[#3d5a50]）・サイト名（text-[#6b7583] text-xs）・タイトル冒頭（日本語・text-sm text-[#2c3648]）・▶アイコン（text-[#6b7583]）
 - タイトルは truncate を使わず、最大2行で折り返す（line-clamp-2）
-- **タイトルは元記事URLへのリンク（<a href="URL" target="_blank" rel="noopener">）にする**
+- **タイトルは元記事URLへのリンク（\`<a href="URL" target="_blank" rel="noopener">\`）にする**
 - 展開後: 日本語フルタイトル（リンク付き）・日本語要旨（text-sm leading-relaxed）・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
 - aria-expanded / aria-controls を正しく設定
 
