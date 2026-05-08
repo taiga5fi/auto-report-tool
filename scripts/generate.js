@@ -55,31 +55,51 @@ ${articleSummaries}
 - メインコンテンツ: max-w-4xl mx-auto px-4 py-10 space-y-10
 - カード: bg-stone-50 rounded-xl shadow-sm border border-slate-200
 - tailwind.config でフォントとline-heightを設定すること
+- カラーパレットは必ずslate/stone系のみ使用（原色・vivid色は絶対禁止）
+- カテゴリバッジは bg-slate-100 text-slate-600 のみ（カラフルにしない）
+- **スマホ（iPhone）とPC両対応のレスポンシブデザイン必須**
+  - フロー図はスマホで縦並び（flex-col）、PCで横並び（md:flex-row）
+  - テキストは最小14px以上、ボタンはタップしやすいサイズ（min-height 44px）
+  - 横スクロールが発生しないよう overflow-x-hidden をbodyに設定
 
-### 構成（3セクション必須）
+### 言語ルール
+- 記事タイトル・要旨・ポイントが英語の場合は**必ず日本語に翻訳**して表示する
+- 英語のまま表示することは禁止
 
-**SECTION 1 — 今日のニュース**
+### SECTION 1 — 今日のニュース
 - 記事を最大5件カード表示
 - 各カードはアコーディオン（クリックで展開）
-- ヘッダー行: カテゴリバッジ・サイト名・タイトル冒頭・▶アイコン
-- 展開後: フルタイトル・要旨・箇条書きポイント3つ・「この動きの意味」・考察トグル
-- スコアバッジ（例: 「9点」）を右端に表示
+- カードヘッダー行: カテゴリバッジ（bg-slate-100 text-slate-600）・サイト名（text-slate-400）・タイトル冒頭（日本語）・▶アイコン
+- **タイトルは元記事URLへのリンク（<a href="URL" target="_blank" rel="noopener">）にする**
+- 展開後: 日本語フルタイトル（リンク付き）・日本語要旨・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
 - aria-expanded / aria-controls を正しく設定
 
-**SECTION 2 — 構造図解**
-- 記事全体から読み取れる「自動レポートツールのベストプラクティス」を構造化
-- 横スクロール可能なフロー図（overflow-x-auto）で「課題 → アーキテクチャ → 効果」を表現
-- bg-slate-800 text-white の「今日の示唆」calloutを末尾に配置
+### SECTION 2 — 構造図解（記事ごと）
+- 記事1件ごとに独立したフロー図パネルを作成（記事数分）
+- 各パネルのタイトルは記事の日本語タイトル（短縮版）
+- フロー図: 「課題」→「解決アプローチ」→「得られる効果」の3ステップ
+- **レスポンシブ**: スマホは縦並び（flex-col gap-3）、PCは横並び（md:flex-row）
+- 各ステップのボックス: bg-slate-700 text-white rounded-lg p-3（原色禁止）
+- ステップ間の矢印: スマホは↓、PCは→（md:inline hidden切替）
+- パネル末尾に bg-slate-800 text-slate-200 rounded-lg p-3 の「示唆」1行テキストを配置
 
-**SECTION 3 — 学習クイズ**
-- 記事内容から3問のクイズ（4択ラジオボタン）
-- 正解はBとは限らない（記事内容に基づいた正確な正解を設定）
-- 回答後: 正解緑・不正解赤でハイライト + 解説表示
-- 進捗バー（answered/total）を表示
+### SECTION 3 — 抽象化・概念化トレーニング
+- セクションタイトル: 「抽象化・概念化トレーニング」
+- サブタイトル: 「抽象化 ×2　概念化 ×2　アナロジー ×2」
+- 記事内容から6問（抽象化2問・概念化2問・アナロジー2問）
+- 各問はアコーディオン形式（クリックで展開）
+- 問題タイプのバッジと左ボーダー色:
+  - 抽象化: border-l-4 border-l-rose-400、バッジ text-rose-500 bg-rose-50
+  - 概念化: border-l-4 border-l-blue-400、バッジ text-blue-500 bg-blue-50
+  - アナロジー: border-l-4 border-l-emerald-400、バッジ text-emerald-500 bg-emerald-50
+- 各問展開後: 4択ラジオボタン（正解はA〜Dのいずれか、記事内容に基づいた正確な正解）＋「回答する」ボタン＋解説
+- 回答後: 正解緑（bg-green-50 border-green-300）・不正解赤（bg-red-50 border-red-300）
+- 進捗バー（answered/total）表示
 - 全問回答後に「まとめ」パネルを表示
 
 ### JavaScript要件
 - 全てインラインscriptタグ内に記述
+- const TOTAL_QUESTIONS = 6; を定義
 - togglePanel(panelId, iconId, openIcon, closedIcon) を基底関数として使用
 - toggleNews(id)・toggleInsight(id)・toggleQuestion(id)・toggleResult(id) のラッパーを実装
 - answer(btn) 関数でdata-qid属性からクイズ処理
@@ -92,10 +112,10 @@ ${articleSummaries}
 - datetime属性: ${dates.iso}
 - テーマ: 「auto-report-tool × 自動化設計」
 
-### HTMLのみを出力してください
+### 出力ルール
 \`\`\`html から始まるコードブロックは不要です。
 <!DOCTYPE html> から </html> まで完全なHTMLのみを返してください。
-余計な説明文やコメントは一切不要です。
+余計な説明文・コメントは一切不要です。
 `.trim();
 
   console.log('🤖 Gemini APIでHTML生成中...');
