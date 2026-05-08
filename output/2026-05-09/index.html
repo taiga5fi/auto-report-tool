@@ -1,0 +1,783 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>自動レポートツール ベストプラクティス調査 | 2026/05/09</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"M PLUS Rounded 1c"', '"Hiragino Maru Gothic ProN"', 'sans-serif'],
+          },
+          fontSize: {
+            base: ['16px', { lineHeight: '1.9' }],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f6f3ee] text-[#2c3648] font-sans min-h-screen overflow-x-hidden">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-[#2d4a3e] text-white px-6 py-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="bg-white text-slate-900 text-xs font-bold px-2 py-1 rounded">毎朝配信</span>
+        <time datetime="2026-05-09" class="text-[#d1e0dc] text-sm">2026年5月9日（土）</time>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">自動レポートツール ベストプラクティス調査</h1>
+      <p class="text-[#d1e0dc] text-sm sm:text-base">テーマ：<span class="text-white font-medium">auto-report-tool × 自動化設計</span></p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-10 space-y-10">
+
+    <!-- ===== SECTION 1: ニュース ===== -->
+    <section aria-labelledby="section1-heading">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 id="section1-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 1 ── 今日のニュース</h2>
+        <span class="text-xs text-[#6b7583]">全3件</span>
+      </div>
+      <div class="flex flex-col gap-4">
+
+        <!-- Card 1 -->
+        <article class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] overflow-hidden">
+          <button type="button"
+            onclick="toggleNews('news1')"
+            aria-expanded="false"
+            aria-controls="news1-body"
+            class="w-full flex items-start justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex flex-wrap items-center gap-2 min-w-0 pr-3">
+              <span class="text-xs font-bold text-[#3d5a50] bg-[#dceee9] px-2.5 py-1 rounded-full shrink-0">自動化設計</span>
+              <span class="text-[#6b7583] text-xs font-medium shrink-0">Astrato</span>
+              <span class="text-sm text-[#2c3648]">自動レポートの実行手引き（2026年）—インサイトをautopilotで届ける方法</span>
+            </div>
+            <span id="news1-icon" class="text-[#6b7583] text-xs shrink-0 mt-1" aria-hidden="true">▶</span>
+          </button>
+          <div id="news1-body" class="hidden px-6 pb-6 border-t border-[#ede8e1]">
+            <p class="text-base font-bold leading-snug text-slate-900 mt-4 mb-3">
+              <a href="https://www.astrato.io/blog/automated-scheduled-reporting-playbook" target="_blank" rel="noopener" class="hover:text-[#2d4a3e] underline underline-offset-2">
+                自動レポートの実行手引き（2026年）：スマートな企業がインサイトをAutopilotで届ける方法
+              </a>
+            </p>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">BI・分析チームは定型レポート業務に週10〜20時間を費やしている。自動化はその時間を取り戻し、レポートをダッシュボードではなくステークホルダーの受信箱・Slackに直接届ける仕組みを構築する。</p>
+            <ul class="space-y-1.5 mb-4">
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>データソース・KPI・配信頻度・フォーマットを先に設計してから自動化に着手する</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>レポートはダッシュボードを「見に行く」ではなく「届ける」ものとして設計する</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>品質チェックをワークフロー内に組み込み、エラーがサイレントに拡大しないようにする</li>
+            </ul>
+            <div class="pt-3 border-t border-[#ede8e1] mb-4">
+              <p class="text-xs text-slate-500 italic">この動きの意味：自動化の本質は「処理の効率化」ではなく「インサイトを必要な人に届けるまでの設計」にある</p>
+            </div>
+            <div>
+              <button type="button"
+                onclick="toggleInsight('insight1')"
+                aria-expanded="false"
+                aria-controls="insight1"
+                class="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors py-1">
+                <span id="insight1-icon" aria-hidden="true">▶</span>
+                <span>考察を開く</span>
+              </button>
+              <div id="insight1" class="hidden mt-3 p-4 bg-[#edf5f2] rounded-lg border border-[#c0d9d0]">
+                <p class="text-sm text-slate-700 leading-relaxed">「届ける」設計という発想は、このauto-report-toolが目指す方向と完全に一致する。surge.shデプロイ＋Gmailメール通知のパイプラインは、まさに「Autopilotで届ける」仕組みの実装例。次の改善はSlack通知への切り替えで、より即時性の高い配信が実現できる。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] overflow-hidden">
+          <button type="button"
+            onclick="toggleNews('news2')"
+            aria-expanded="false"
+            aria-controls="news2-body"
+            class="w-full flex items-start justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex flex-wrap items-center gap-2 min-w-0 pr-3">
+              <span class="text-xs font-bold text-[#3d5a50] bg-[#dceee9] px-2.5 py-1 rounded-full shrink-0">GitHub Actions</span>
+              <span class="text-[#6b7583] text-xs font-medium shrink-0">aicanblog</span>
+              <span class="text-sm text-[#2c3648]">GitHub Actionsによるスケジュール型APIレポート—サーバーレスパターンの実践</span>
+            </div>
+            <span id="news2-icon" class="text-[#6b7583] text-xs shrink-0 mt-1" aria-hidden="true">▶</span>
+          </button>
+          <div id="news2-body" class="hidden px-6 pb-6 border-t border-[#ede8e1]">
+            <p class="text-base font-bold leading-snug text-slate-900 mt-4 mb-3">
+              <a href="https://aicanblog.com/posts/scheduled-api-reporting-with-github-actions-a-no-server-pattern-that-holds-up/" target="_blank" rel="noopener" class="hover:text-[#2d4a3e] underline underline-offset-2">
+                GitHub Actionsによるスケジュール型APIレポート：堅牢なサーバーレスパターンの実装
+              </a>
+            </p>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">単一リポジトリでワークフロー定義とレポートロジックを管理し、cronトリガー＋手動トリガーの組み合わせで運用する設計パターン。JSONスナップショットとMarkdownサマリーを使い分けることで可読性と信頼性を両立する。</p>
+            <ul class="space-y-1.5 mb-4">
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>「データ契約」を先に定義する：入力・出力・成功基準を実装前に明文化する</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>機械可読なJSONスナップショットと人間可読なMarkdownサマリーを分けて保存する</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>失敗モードを明示的に設計し、部分的な結果はサイレントに省略しない</li>
+            </ul>
+            <div class="pt-3 border-t border-[#ede8e1] mb-4">
+              <p class="text-xs text-slate-500 italic">この動きの意味：GitHub ActionsはCI/CDだけでなく、定期レポート配信の実行基盤として完成度が高い</p>
+            </div>
+            <div>
+              <button type="button"
+                onclick="toggleInsight('insight2')"
+                aria-expanded="false"
+                aria-controls="insight2"
+                class="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors py-1">
+                <span id="insight2-icon" aria-hidden="true">▶</span>
+                <span>考察を開く</span>
+              </button>
+              <div id="insight2" class="hidden mt-3 p-4 bg-[#edf5f2] rounded-lg border border-[#c0d9d0]">
+                <p class="text-sm text-slate-700 leading-relaxed">「データ契約の先行定義」はこのツールの環境変数設計に対応する。BRAVE_API_KEY・GEMINI_API_KEY等のSecretsがまさに「入力の契約」。現状のrun.jsは出力（HTMLとURL）の契約が暗黙的なので、ログ出力を構造化JSONにする改善が次のステップとなりうる。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] overflow-hidden">
+          <button type="button"
+            onclick="toggleNews('news3')"
+            aria-expanded="false"
+            aria-controls="news3-body"
+            class="w-full flex items-start justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex flex-wrap items-center gap-2 min-w-0 pr-3">
+              <span class="text-xs font-bold text-[#3d5a50] bg-[#dceee9] px-2.5 py-1 rounded-full shrink-0">品質設計</span>
+              <span class="text-[#6b7583] text-xs font-medium shrink-0">Sona</span>
+              <span class="text-sm text-[#2c3648]">マーケティングレポート自動化のベストプラクティス—KPI標準化と品質チェックの実装</span>
+            </div>
+            <span id="news3-icon" class="text-[#6b7583] text-xs shrink-0 mt-1" aria-hidden="true">▶</span>
+          </button>
+          <div id="news3-body" class="hidden px-6 pb-6 border-t border-[#ede8e1]">
+            <p class="text-base font-bold leading-snug text-slate-900 mt-4 mb-3">
+              <a href="https://www.sona.com/blog/best-practices-for-automating-marketing-reporting-tips-and-strategies" target="_blank" rel="noopener" class="hover:text-[#2d4a3e] underline underline-offset-2">
+                マーケティングレポート自動化のベストプラクティス：KPI標準化と品質設計の戦略
+              </a>
+            </p>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">チーム横断でKPIを標準化し、全ステークホルダーが同一ソースから同一定義の数値を参照できる体制を構築する。データ取り込みと表示を分離する設計により、品質問題が下流に伝播しない仕組みを作る。</p>
+            <ul class="space-y-1.5 mb-4">
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>KPIをチーム全体で標準化し「どのバージョンが正しいか」論争をなくす</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>生データ取り込みと整形済みレポートを別レイヤーで管理し相互参照する</li>
+              <li class="flex gap-2 text-sm text-slate-600"><span class="text-slate-400 shrink-0" aria-hidden="true">▸</span>バリデーションをワークフロー内に組み込み、エラーが無音で拡大することを防ぐ</li>
+            </ul>
+            <div class="pt-3 border-t border-[#ede8e1] mb-4">
+              <p class="text-xs text-slate-500 italic">この動きの意味：自動化の信頼性は「データの品質ゲート」をどこに置くかで決まる</p>
+            </div>
+            <div>
+              <button type="button"
+                onclick="toggleInsight('insight3')"
+                aria-expanded="false"
+                aria-controls="insight3"
+                class="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors py-1">
+                <span id="insight3-icon" aria-hidden="true">▶</span>
+                <span>考察を開く</span>
+              </button>
+              <div id="insight3" class="hidden mt-3 p-4 bg-[#edf5f2] rounded-lg border border-[#c0d9d0]">
+                <p class="text-sm text-slate-700 leading-relaxed">このツールのスコアリング機能（1〜10点）がまさに「品質ゲート」の役割を果たしている。現状は閾値が10点のみだが、7点未満の記事を除外するルールを追加することで、低品質なHTMLが生成されるリスクを下げられる。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2: 構造図解（記事ごと） ===== -->
+    <section aria-labelledby="section2-heading">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 id="section2-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 2 ── 構造図解</h2>
+        <span class="text-xs text-[#6b7583]">記事ごと</span>
+      </div>
+      <div class="flex flex-col gap-6">
+
+        <!-- Diagram 1 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] p-5">
+          <p class="text-sm font-bold text-slate-700 mb-4">① 自動レポートをAutopilotで届ける設計</p>
+          <div class="flex flex-col md:flex-row md:items-start gap-3">
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">課題</span>
+              <p class="text-sm leading-relaxed">BI・分析チームが定型レポートに週10〜20時間を費やし、ダッシュボードを「見に行く」文化が定着している</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">解決アプローチ</span>
+              <p class="text-sm leading-relaxed">cronトリガー＋APIで定時実行、HTML生成後にメール・Slackへ自動配信するAutopilotパイプラインを構築</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">得られる効果</span>
+              <p class="text-sm leading-relaxed">週10〜20時間の定型業務を解放し、インサイトが必要な人に自動で届く「届ける」文化へ転換</p>
+            </div>
+          </div>
+          <div class="mt-4 bg-[#2d4a3e] text-[#c8ddd6] rounded-lg p-4 text-sm leading-relaxed">
+            💡 示唆：自動化の価値は処理の高速化ではなく「インサイトの到達率」を上げることにある
+          </div>
+        </div>
+
+        <!-- Diagram 2 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] p-5">
+          <p class="text-sm font-bold text-slate-700 mb-4">② GitHub Actionsによるサーバーレスレポートパイプライン</p>
+          <div class="flex flex-col md:flex-row md:items-start gap-3">
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">課題</span>
+              <p class="text-sm leading-relaxed">サーバー管理コストをかけずに定期レポートを実行・配信する仕組みが必要</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">解決アプローチ</span>
+              <p class="text-sm leading-relaxed">単一リポジトリ＋YAMLワークフロー＋データ契約の先行定義でサーバーゼロのレポート基盤を実装</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">得られる効果</span>
+              <p class="text-sm leading-relaxed">インフラコストゼロ・完全自動・失敗時も明示的ログが残る信頼性の高いパイプラインが完成</p>
+            </div>
+          </div>
+          <div class="mt-4 bg-[#2d4a3e] text-[#c8ddd6] rounded-lg p-4 text-sm leading-relaxed">
+            💡 示唆：GitHub ActionsはCI/CDだけでなく、定期レポート配信の完成された実行基盤として使える
+          </div>
+        </div>
+
+        <!-- Diagram 3 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] p-5">
+          <p class="text-sm font-bold text-slate-700 mb-4">③ KPI標準化と品質ゲートによる信頼性設計</p>
+          <div class="flex flex-col md:flex-row md:items-start gap-3">
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">課題</span>
+              <p class="text-sm leading-relaxed">チーム間で異なるKPI定義が存在し、「どの数値が正しいか」論争が繰り返し発生する</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">解決アプローチ</span>
+              <p class="text-sm leading-relaxed">KPIを単一ソースで標準化し、データ取り込みと表示を分離。ワークフロー内にバリデーションを組み込む</p>
+            </div>
+            <div class="text-slate-400 font-bold text-center md:mt-8 md:text-lg text-2xl">
+              <span class="md:hidden block">↓</span>
+              <span class="hidden md:block">→</span>
+            </div>
+            <div class="flex-1 bg-[#3d5a50] text-white rounded-lg p-4 min-h-[80px]">
+              <span class="text-xs font-bold text-slate-300 block mb-2">得られる効果</span>
+              <p class="text-sm leading-relaxed">全ステークホルダーが同一定義の数値を参照でき、エラーが無音で拡大するリスクがなくなる</p>
+            </div>
+          </div>
+          <div class="mt-4 bg-[#2d4a3e] text-[#c8ddd6] rounded-lg p-4 text-sm leading-relaxed">
+            💡 示唆：自動化の信頼性は「どこに品質ゲートを置くか」で決まる—スコアリング閾値の設計が鍵
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 今日の示唆（SECTION 2 全体まとめ） -->
+      <div class="mt-6 bg-[#1e2d3a] rounded-xl p-6 text-center">
+        <p class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">今日の示唆</p>
+        <p class="text-white text-lg sm:text-xl font-bold leading-relaxed">自動化の信頼性は「設計の質」で決まる—スコアリング・データ契約・品質ゲートの三位一体が、レポートツールを「動くもの」から「信頼できるもの」へ昇華させる</p>
+      </div>
+
+    </section>
+
+    <!-- ===== SECTION 3: 抽象化・概念化トレーニング ===== -->
+    <section aria-labelledby="section3-heading">
+      <div class="flex items-baseline justify-between mb-2">
+        <h2 id="section3-heading" class="text-sm font-bold tracking-widest text-[#6b7583] uppercase">SECTION 3 ── 抽象化・概念化トレーニング</h2>
+        <span class="text-xs text-[#6b7583]">全6問</span>
+      </div>
+      <p class="text-xs text-[#6b7583] mb-5">抽象化 ×2　概念化 ×2　アナロジー ×2</p>
+
+      <!-- Progress -->
+      <div class="bg-white rounded-xl border border-[#dfd6c9] p-4 mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#6b7583]">回答済み</span>
+          <span id="progress-text" class="text-xs font-bold text-[#2c3648]">0 / 6</span>
+        </div>
+        <div class="w-full bg-slate-200 rounded-full h-2" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="6">
+          <div id="progress-bar" class="bg-[#4a7c6f] h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4">
+
+        <!-- Q1: 抽象化 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#b07070] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q1')"
+            aria-expanded="false"
+            aria-controls="q1-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#b07070] bg-[#f5eaea] px-2 py-0.5 rounded shrink-0">抽象化</span>
+              <span class="text-xs text-slate-400 shrink-0">Q1 / 6</span>
+              <span class="text-sm text-[#2c3648]">自動レポートの本質的な価値を一言で表すと…</span>
+            </div>
+            <span id="q1-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q1-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">自動レポートツールの本質的な価値を最もよく表している表現はどれか？</p>
+            <div class="space-y-2 mb-4" id="q1-options">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q1" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. データ処理の高速化</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q1" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. インサイトの到達率を上げる仕組み</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q1" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. コスト削減のための効率化</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q1" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. ダッシュボードの自動更新</span>
+              </label>
+            </div>
+            <p id="q1-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q1" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q1-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q1-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q1')" aria-expanded="false" aria-controls="q1-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q1-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q1-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                Astrато記事の核心は「ダッシュボードを見に行く文化」から「インサイトを届ける文化」への転換。処理速度やコスト削減は手段であり、「必要な人に必要な情報が届く」ことが本質的な価値。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2: 抽象化 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#b07070] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q2')"
+            aria-expanded="false"
+            aria-controls="q2-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#b07070] bg-[#f5eaea] px-2 py-0.5 rounded shrink-0">抽象化</span>
+              <span class="text-xs text-slate-400 shrink-0">Q2 / 6</span>
+              <span class="text-sm text-[#2c3648]">「データ契約の先行定義」が重要な理由は…</span>
+            </div>
+            <span id="q2-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q2-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">GitHub Actions記事で強調された「データ契約の先行定義」が重要な理由として最も適切なものはどれか？</p>
+            <div class="space-y-2 mb-4">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q2" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. 実装を素早く始めるため</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q2" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. 失敗モードを明示的にし、サイレントな品質劣化を防ぐため</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q2" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. APIコストを削減するため</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q2" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. GitHubのクォータ制限を回避するため</span>
+              </label>
+            </div>
+            <p id="q2-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q2" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q2-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q2-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q2')" aria-expanded="false" aria-controls="q2-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q2-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q2-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                記事では「部分的な結果はサイレントに省略しない」「失敗モードを明示的に設計する」が最大の信頼性向上ポイントとして強調されている。データ契約は「何が成功で何が失敗か」を事前に合意するものであり、これがないと問題が見えないまま蓄積する。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3: 概念化 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#6b8cad] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q3')"
+            aria-expanded="false"
+            aria-controls="q3-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#4a6fa5] bg-[#eaeff7] px-2 py-0.5 rounded shrink-0">概念化</span>
+              <span class="text-xs text-slate-400 shrink-0">Q3 / 6</span>
+              <span class="text-sm text-[#2c3648]">スコアリング機能が担っている役割を概念化すると…</span>
+            </div>
+            <span id="q3-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q3-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">このauto-report-toolのスコアリング機能（1〜10点評価）は、Sona記事で言う何に対応するか？</p>
+            <div class="space-y-2 mb-4">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q3" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. KPIの標準化</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q3" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. データ取り込みと表示の分離</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q3" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. ワークフロー内の品質ゲート（バリデーション）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q3" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. 配信チャネルの多様化</span>
+              </label>
+            </div>
+            <p id="q3-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q3" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q3-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q3-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q3')" aria-expanded="false" aria-controls="q3-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q3-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q3-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                スコアリングは「この記事を次のステップに進めていいか」を判定する品質ゲートそのもの。Sona記事の「バリデーションをワークフロー内に組み込む」と完全に対応している。10点で即停止するロジックは「10点の記事が見つかれば他は不要」という品質判断の自動化。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4: 概念化 -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#6b8cad] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q4')"
+            aria-expanded="false"
+            aria-controls="q4-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#4a6fa5] bg-[#eaeff7] px-2 py-0.5 rounded shrink-0">概念化</span>
+              <span class="text-xs text-slate-400 shrink-0">Q4 / 6</span>
+              <span class="text-sm text-[#2c3648]">GitHub ActionsのSecretsが担う設計上の役割は…</span>
+            </div>
+            <span id="q4-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q4-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">BRAVE_API_KEY・GEMINI_API_KEY等のGitHub Secretsは、GitHub Actions記事の「データ契約」概念のどの部分に対応するか？</p>
+            <div class="space-y-2 mb-4">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q4" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. 出力の契約（HTMLのスキーマ定義）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q4" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. 入力の契約（必要な認証情報・エンドポイントの定義）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q4" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. 成功基準の定義</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q4" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. 配信先チャネルの設定</span>
+              </label>
+            </div>
+            <p id="q4-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q4" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q4-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q4-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q4')" aria-expanded="false" aria-controls="q4-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q4-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q4-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                Secretsは「このワークフローを動かすために必要な認証情報」を明示的に定義したもの。記事の「入力（credentials, endpoints）を先に定義する」に完全対応する。Secretsが揃っていなければワークフローは起動すら失敗するという設計が、暗黙的な依存関係をなくしている。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q5: アナロジー -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#5a9678] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q5')"
+            aria-expanded="false"
+            aria-controls="q5-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#4a8c6a] bg-[#eaf4ee] px-2 py-0.5 rounded shrink-0">アナロジー</span>
+              <span class="text-xs text-slate-400 shrink-0">Q5 / 6</span>
+              <span class="text-sm text-[#2c3648]">自動レポートの「Autopilot配信」に最も構造が近い仕組みは…</span>
+            </div>
+            <span id="q5-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q5-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">「ダッシュボードを見に行く」から「インサイトが届く」への転換に最も近いアナロジーはどれか？</p>
+            <div class="space-y-2 mb-4">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q5" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. 図書館で本を探す → 本が家に届く（宅配サービス）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q5" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. 料理を作る → 料理の写真を撮る</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q5" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. 電話をかける → メールを送る</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q5" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. 地図を読む → GPSナビを使う</span>
+              </label>
+            </div>
+            <p id="q5-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q5" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q5-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q5-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q5')" aria-expanded="false" aria-controls="q5-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q5-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q5-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                「探しに行く」から「届く」への転換は、図書館（プル型）から宅配サービス（プッシュ型）への移行と完全に同じ構造。情報の取得モードが「能動的検索」から「受動的受信」に変わることが本質であり、その設計こそが自動レポートの価値。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q6: アナロジー -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#dfd6c9] border-l-4 border-l-[#5a9678] overflow-hidden">
+          <button type="button"
+            onclick="toggleQuestion('q6')"
+            aria-expanded="false"
+            aria-controls="q6-question-body"
+            class="w-full flex items-center justify-between px-5 py-4 hover:bg-[#f0ebe4] transition-colors text-left min-h-[56px]">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="text-xs font-bold text-[#4a8c6a] bg-[#eaf4ee] px-2 py-0.5 rounded shrink-0">アナロジー</span>
+              <span class="text-xs text-slate-400 shrink-0">Q6 / 6</span>
+              <span class="text-sm text-[#2c3648]">「品質ゲート」の仕組みに最も近い実世界の例は…</span>
+            </div>
+            <span id="q6-question-icon" class="text-[#6b7583] text-xs shrink-0 ml-3" aria-hidden="true">▶</span>
+          </button>
+          <div id="q6-question-body" class="hidden px-5 pb-5 border-t border-[#ede8e1]">
+            <p class="text-sm font-medium text-slate-800 mt-4 mb-4">スコアリングによる品質ゲート（低スコア記事を除外する仕組み）に最も構造が近い実世界の例はどれか？</p>
+            <div class="space-y-2 mb-4">
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q6" value="A" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">A. 信号機（赤で止まる・青で進む）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q6" value="B" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">B. 食品工場の異物検査ライン（基準未満は排除）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q6" value="C" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">C. 天気予報（明日の天気を予測する）</span>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-[#f0ebe4] transition-colors">
+                <input type="radio" name="q6" value="D" class="mt-0.5 accent-blue-500 shrink-0">
+                <span class="text-sm text-slate-700">D. カレンダーのリマインダー機能</span>
+              </label>
+            </div>
+            <p id="q6-error" class="hidden text-xs text-[#c53030] mb-2">選択肢を選んでから回答してください</p>
+            <button type="button" data-qid="q6" onclick="answer(this)"
+              class="text-xs font-bold bg-[#2d4a3e] text-white px-4 py-2 rounded-lg hover:bg-[#3d5a50] transition-colors">
+              回答する
+            </button>
+            <div id="q6-result" class="hidden mt-4 p-4 bg-stone-100 rounded-lg border border-slate-200">
+              <p id="q6-result-title" class="text-xs font-bold text-[#15803d] mb-2">✅ 正解！</p>
+              <button type="button" onclick="toggleResult('q6')" aria-expanded="false" aria-controls="q6-result-body"
+                class="text-xs text-blue-600 font-medium mb-2">
+                <span id="q6-result-toggle">▶ 解説を開く</span>
+              </button>
+              <div id="q6-result-body" class="hidden text-sm text-slate-600 leading-relaxed">
+                食品工場の異物検査は「一定基準を満たさないものを自動排除し、下流に流さない」仕組みで、品質ゲートと完全に同じ構造。スコアリングの閾値設定（例：7点未満は除外）は、この検査基準の設定に相当する。信号機はルールベースのフロー制御であり、品質評価ではない。
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Summary button -->
+      <div class="mt-8 text-center">
+        <button id="summary-btn" type="button" onclick="toggleSummary()"
+          aria-expanded="false" aria-controls="brief-summary"
+          class="bg-[#2d4a3e] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#3d5a50] transition-colors text-sm">
+          ▶ 今日のまとめを見る
+        </button>
+      </div>
+
+      <!-- Summary panel -->
+      <div id="brief-summary" class="hidden mt-6 bg-white rounded-xl border border-[#dfd6c9] p-6" tabindex="-1">
+        <p class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-4">TODAY'S SUMMARY</p>
+        <p class="text-sm text-slate-700 mb-2">スコア：<span id="score-display" class="font-bold text-slate-900">0</span> / <span id="total-display" class="font-bold text-slate-900">6</span> 問正解</p>
+        <div class="space-y-3 mt-4 text-sm text-slate-600 leading-relaxed">
+          <p>📌 自動レポートの本質は「処理効率化」ではなく「インサイトの到達率を上げる設計」にある。</p>
+          <p>📌 GitHub ActionsはCI/CDだけでなく、定期レポート配信の完成された無料インフラとして活用できる。</p>
+          <p>📌 スコアリングによる品質ゲートと、データ契約の先行定義が自動化の信頼性を決定づける。</p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="text-center text-xs text-[#6b7583] py-8 border-t border-[#dfd6c9] mt-4">
+    自動生成レポート — auto-report-tool by taiga5fi
+  </footer>
+
+  <script>
+    const TOTAL_QUESTIONS = 6;
+    const CORRECT_ANSWERS = { q1: 'B', q2: 'B', q3: 'C', q4: 'B', q5: 'A', q6: 'B' };
+    const answered = new Set();
+    let correctCount = 0;
+
+    function togglePanel(panelId, iconId, openIcon = '▼', closedIcon = '▶') {
+      const panel = document.getElementById(panelId);
+      const isHidden = panel.classList.contains('hidden');
+      panel.classList.toggle('hidden', !isHidden);
+      if (iconId) {
+        const icon = document.getElementById(iconId);
+        if (icon) icon.textContent = isHidden ? openIcon : closedIcon;
+      }
+      const btn = document.querySelector(`[aria-controls="${panelId}"]`);
+      if (btn) btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    }
+
+    function toggleQuestion(id) {
+      togglePanel(`${id}-question-body`, `${id}-question-icon`);
+    }
+
+    function toggleInsight(id) {
+      togglePanel(id, `${id}-icon`);
+    }
+
+    function toggleResult(id) {
+      togglePanel(`${id}-result-body`, `${id}-result-toggle`, '▼ 解説を閉じる', '▶ 解説を開く');
+    }
+
+    function toggleNews(id) {
+      const body = document.getElementById(`${id}-body`);
+      const isCurrentlyOpen = !body.classList.contains('hidden');
+      togglePanel(`${id}-body`, `${id}-icon`);
+      if (isCurrentlyOpen) {
+        const num = id.replace('news', '');
+        const insightBody = document.getElementById(`insight${num}`);
+        const insightIcon = document.getElementById(`insight${num}-icon`);
+        const insightBtn = document.querySelector(`[aria-controls="insight${num}"]`);
+        if (insightBody && !insightBody.classList.contains('hidden')) {
+          insightBody.classList.add('hidden');
+          if (insightIcon) insightIcon.textContent = '▶';
+          if (insightBtn) insightBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    }
+
+    function answer(btn) {
+      const questionId = btn.dataset.qid;
+      if (answered.has(questionId)) return;
+      const selected = document.querySelector(`input[name="${questionId}"]:checked`);
+      const errorEl = document.getElementById(`${questionId}-error`);
+      if (!selected) {
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      errorEl.classList.add('hidden');
+      answered.add(questionId);
+      const correctAnswer = CORRECT_ANSWERS[questionId];
+      const isCorrect = selected.value === correctAnswer;
+      if (isCorrect) correctCount++;
+
+      document.querySelectorAll(`input[name="${questionId}"]`).forEach(input => {
+        const label = input.parentElement;
+        if (input.value === correctAnswer) {
+          label.classList.add('bg-green-50', 'border-green-300');
+        } else if (input.value === selected.value && !isCorrect) {
+          label.classList.add('bg-red-50', 'border-red-300');
+        }
+        input.disabled = true;
+        label.classList.remove('cursor-pointer', 'hover:bg-stone-100');
+      });
+
+      const result = document.getElementById(`${questionId}-result`);
+      const resultTitle = document.getElementById(`${questionId}-result-title`);
+      if (!isCorrect) {
+        resultTitle.textContent = `❌ 不正解（正解：${correctAnswer}）`;
+        resultTitle.classList.replace('text-green-600', 'text-red-500');
+      }
+      result.classList.remove('hidden');
+      // 解説を自動で開く
+      const resultBody = document.getElementById(`${questionId}-result-body`);
+      const resultToggle = document.getElementById(`${questionId}-result-toggle`);
+      if (resultBody) resultBody.classList.remove('hidden');
+      if (resultToggle) resultToggle.textContent = '▼ 解説を閉じる';
+      const answerBtn = document.querySelector(`button[data-qid="${questionId}"]`);
+      answerBtn.disabled = true;
+      answerBtn.classList.add('opacity-40', 'cursor-not-allowed');
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const count = answered.size;
+      document.getElementById('progress-text').textContent = `${count} / ${TOTAL_QUESTIONS}`;
+      const pct = (count / TOTAL_QUESTIONS) * 100;
+      const bar = document.getElementById('progress-bar');
+      bar.style.width = `${pct}%`;
+      bar.setAttribute('aria-valuenow', count);
+    }
+
+    function toggleSummary() {
+      const summary = document.getElementById('brief-summary');
+      const btn = document.getElementById('summary-btn');
+      const isHidden = summary.classList.contains('hidden');
+      if (isHidden) {
+        document.getElementById('score-display').textContent = `${correctCount}`;
+        document.getElementById('total-display').textContent = `${TOTAL_QUESTIONS}`;
+        summary.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.innerHTML = '▼ 今日のまとめを見る';
+        summary.focus();
+      } else {
+        summary.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = '▶ 今日のまとめを見る';
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+
+
