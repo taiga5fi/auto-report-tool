@@ -31,7 +31,7 @@ function getDateStrings() {
  */
 export async function generateHtml(articles) {
   const genai = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genai.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  const model = genai.getGenerativeModel({ model: 'gemini-1.5-flash' });
   const dates = getDateStrings();
 
   const articleSummaries = articles
