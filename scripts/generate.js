@@ -49,18 +49,24 @@ ${articleSummaries}
 
 ### デザイン・技術要件
 - Tailwind CSS CDN（https://cdn.tailwindcss.com）を使用
-- Google Fonts: Noto Sans JP (400,500,600,700)
-- 背景: bg-stone-100, テキスト: text-slate-800
-- ヘッダー: bg-slate-900 text-white、最大幅 max-w-4xl mx-auto
-- メインコンテンツ: max-w-4xl mx-auto px-4 py-10 space-y-10
-- カード: bg-stone-50 rounded-xl shadow-sm border border-slate-200
-- tailwind.config でフォントとline-heightを設定すること
-- カラーパレットは必ずslate/stone系のみ使用（原色・vivid色は絶対禁止）
-- カテゴリバッジは bg-slate-100 text-slate-600 のみ（カラフルにしない）
-- **スマホ（iPhone）とPC両対応のレスポンシブデザイン必須**
-  - フロー図はスマホで縦並び（flex-col）、PCで横並び（md:flex-row）
-  - テキストは最小14px以上、ボタンはタップしやすいサイズ（min-height 44px）
-  - 横スクロールが発生しないよう overflow-x-hidden をbodyに設定
+- Google Fonts: **M PLUS Rounded 1c** (400,500,700) を使用
+  - `<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">`
+  - tailwind.config: `sans: ['"M PLUS Rounded 1c"', '"Hiragino Maru Gothic ProN"', 'sans-serif']`
+- **配色（必ず以下のカスタムカラーを使用・Tailwindのデフォルト色は使わない）**:
+  - body背景: `bg-[#f6f3ee]` テキスト: `text-[#2c3648]`
+  - ヘッダー: `bg-[#2d4a3e] text-white`
+  - ヘッダー内の日付・サブテキスト: `text-[#d1e0dc]`（暗背景上でのコントラスト確保）
+  - カード背景: `bg-white` ボーダー: `border-[#dfd6c9]`
+  - カードホバー: `hover:bg-[#f0ebe4]`
+  - フロー図ボックス: `bg-[#3d5a50] text-white`
+  - 示唆ボックス: `bg-[#2d4a3e] text-[#d1e0dc]`
+  - 考察エリア: `bg-[#edf5f2] border-[#c0d9d0]`
+  - 進捗バー: `bg-[#4a7c6f]`
+  - カテゴリバッジ: `bg-[#dceee9] text-[#3d5a50]`
+  - ボタン: `bg-[#2d4a3e] hover:bg-[#3d5a50] text-white`
+  - セクション区切り: `border-[#dfd6c9]`
+  - セクション見出し・補助テキスト（薄い文字）: `text-[#6b7583]`（白背景でのAA基準を満たすグレー）
+  - エラー文: `text-[#c53030]`、正解文: `text-[#15803d]`
 
 ### 言語ルール
 - 記事タイトル・要旨・ポイントが英語の場合は**必ず日本語に翻訳**して表示する
@@ -69,19 +75,24 @@ ${articleSummaries}
 ### SECTION 1 — 今日のニュース
 - 記事を最大5件カード表示
 - 各カードはアコーディオン（クリックで展開）
-- カードヘッダー行: カテゴリバッジ（bg-slate-100 text-slate-600）・サイト名（text-slate-400）・タイトル冒頭（日本語）・▶アイコン
+- カードヘッダー行: カテゴリバッジ（bg-[#dceee9] text-[#3d5a50]）・サイト名（text-[#6b7583] text-xs）・タイトル冒頭（日本語・text-sm text-[#2c3648]）・▶アイコン（text-[#6b7583]）
+- タイトルは truncate を使わず、最大2行で折り返す（line-clamp-2）
 - **タイトルは元記事URLへのリンク（<a href="URL" target="_blank" rel="noopener">）にする**
-- 展開後: 日本語フルタイトル（リンク付き）・日本語要旨・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
+- 展開後: 日本語フルタイトル（リンク付き）・日本語要旨（text-sm leading-relaxed）・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
 - aria-expanded / aria-controls を正しく設定
 
 ### SECTION 2 — 構造図解（記事ごと）
 - 記事1件ごとに独立したフロー図パネルを作成（記事数分）
 - 各パネルのタイトルは記事の日本語タイトル（短縮版）
 - フロー図: 「課題」→「解決アプローチ」→「得られる効果」の3ステップ
-- **レスポンシブ**: スマホは縦並び（flex-col gap-3）、PCは横並び（md:flex-row）
-- 各ステップのボックス: bg-slate-700 text-white rounded-lg p-3（原色禁止）
-- ステップ間の矢印: スマホは↓、PCは→（md:inline hidden切替）
-- パネル末尾に bg-slate-800 text-slate-200 rounded-lg p-3 の「示唆」1行テキストを配置
+- **レスポンシブ**: スマホは縦並び（flex-col gap-4）、PCは横並び（md:flex-row md:items-start）
+- 各ステップのボックス:
+  - bg-slate-700 text-white rounded-lg p-4 flex-1（原色禁止）
+  - ラベル（「課題」等）: text-xs font-bold text-slate-300 mb-2 block
+  - 本文: text-sm leading-relaxed（テキストは絶対に切らない・折り返す）
+  - min-h-[80px] を設定してボックスが潰れないようにする
+- ステップ間の矢印: スマホは「↓」をtext-center、PCは「→」をmt-8（md:block hidden切替）
+- パネル末尾に bg-slate-800 text-slate-200 rounded-lg p-4 text-sm leading-relaxed の「示唆」テキストを配置
 
 ### SECTION 3 — 抽象化・概念化トレーニング
 - セクションタイトル: 「抽象化・概念化トレーニング」
@@ -89,11 +100,11 @@ ${articleSummaries}
 - 記事内容から6問（抽象化2問・概念化2問・アナロジー2問）
 - 各問はアコーディオン形式（クリックで展開）
 - 問題タイプのバッジと左ボーダー色:
-  - 抽象化: border-l-4 border-l-rose-400、バッジ text-rose-500 bg-rose-50
-  - 概念化: border-l-4 border-l-blue-400、バッジ text-blue-500 bg-blue-50
-  - アナロジー: border-l-4 border-l-emerald-400、バッジ text-emerald-500 bg-emerald-50
+  - 抽象化: border-l-4 border-l-[#b07070]、バッジ text-[#b07070] bg-[#f5eaea]
+  - 概念化: border-l-4 border-l-[#6b8cad]、バッジ text-[#6b8cad] bg-[#eaf0f7]
+  - アナロジー: border-l-4 border-l-[#5a9678]、バッジ text-[#5a9678] bg-[#eaf3ee]
 - 各問展開後: 4択ラジオボタン（正解はA〜Dのいずれか、記事内容に基づいた正確な正解）＋「回答する」ボタン＋解説
-- 回答後: 正解緑（bg-green-50 border-green-300）・不正解赤（bg-red-50 border-red-300）
+- 回答後: 正解（bg-green-50 border-[#15803d] text-[#15803d]）・不正解（bg-red-50 border-[#c53030] text-[#c53030]）
 - 進捗バー（answered/total）表示
 - 全問回答後に「まとめ」パネルを表示
 
