@@ -17,65 +17,37 @@ const WEEKLY_THEMES = {
   0: { // 日曜
     name: '週間AIツール・自動化トレンド',
     topic: 'AIツール・自動化の週間トレンド',
-    queries: [
-      'AI automation tools weekly trends 2026',
-      'best AI productivity tools this week',
-      'AIツール 自動化 最新トレンド 2026',
-    ],
+    queries: ['AI automation tools weekly trends 2026'],
   },
   1: { // 月曜
     name: '自動レポート × 業務自動化',
     topic: 'auto-report-tool ベストプラクティス',
-    queries: [
-      'auto report tool best practices 2026',
-      'automated reporting workflow design',
-      'レポート自動化 業務改善 事例 2026',
-    ],
+    queries: ['auto report tool best practices 2026'],
   },
   2: { // 火曜
     name: '電力・エネルギー業界最新動向',
     topic: '電力・エネルギー業界の最新動向',
-    queries: [
-      'electricity energy industry news Japan 2026',
-      '再生可能エネルギー 電力市場 最新ニュース 2026',
-      'power grid smart energy trends 2026',
-    ],
+    queries: ['electricity energy industry news Japan 2026'],
   },
   3: { // 水曜
     name: 'データ分析・BIツール活用',
     topic: 'データ分析・BIツールのベストプラクティス',
-    queries: [
-      'data analytics BI tools best practices 2026',
-      'business intelligence dashboard automation',
-      'データ分析 可視化 ダッシュボード 事例 2026',
-    ],
+    queries: ['data analytics BI tools best practices 2026'],
   },
   4: { // 木曜
     name: 'ビジネスDX・業務改善事例',
     topic: 'DX・デジタル業務改善の最新事例',
-    queries: [
-      'digital transformation business automation case study 2026',
-      'DX 業務改善 成功事例 日本企業 2026',
-      'workflow automation ROI examples 2026',
-    ],
+    queries: ['digital transformation business automation case study 2026'],
   },
   5: { // 金曜
     name: '最新AIモデル・テクノロジー動向',
     topic: '最新AIモデル・テクノロジーの動向',
-    queries: [
-      'latest AI model release technology news 2026',
-      'generative AI business use cases 2026',
-      '生成AI 最新動向 活用事例 2026',
-    ],
+    queries: ['latest AI model release technology news 2026'],
   },
   6: { // 土曜
     name: '再生可能エネルギー・電力市場',
     topic: '再生可能エネルギーと電力市場の動向',
-    queries: [
-      'renewable energy market trends Japan 2026',
-      '太陽光 風力 電力取引 市場動向 2026',
-      'energy storage battery grid technology 2026',
-    ],
+    queries: ['renewable energy market trends Japan 2026'],
   },
 };
 
