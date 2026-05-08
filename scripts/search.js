@@ -10,13 +10,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const BRAVE_ENDPOINT = 'https://api.search.brave.com/res/v1/web/search';
 const TOPIC = 'auto-report-tool ベストプラクティス';
 
-// 多言語・多角度のクエリリスト
+// テスト用：クエリを1件・結果3件に絞る（動作確認後に元に戻す）
 const QUERIES = [
   'auto report tool best practices 2026',
-  '自動レポートツール ベストプラクティス 2026',
-  'automated reporting workflow GitHub Actions best practices',
-  'レポート自動化 設計パターン',
-  'report automation AI HTML generation workflow',
 ];
 
 /**
@@ -25,8 +21,8 @@ const QUERIES = [
 async function braveSearch(query, lang = 'en') {
   const params = new URLSearchParams({
     q: query,
-    count: '5',
-    freshness: 'py',  // 過去1年
+    count: '3',
+    freshness: 'py',
     search_lang: lang,
     extra_snippets: 'true',
   });
