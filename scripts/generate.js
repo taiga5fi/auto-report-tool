@@ -75,10 +75,12 @@ ${articleSummaries}
 ### SECTION 1 — 今日のニュース
 - 記事を最大5件カード表示
 - 各カードはアコーディオン（クリックで展開）
-- カードヘッダー行: カテゴリバッジ（bg-[#dceee9] text-[#3d5a50]）・サイト名（text-[#6b7583] text-xs）・タイトル冒頭（日本語・text-sm text-[#2c3648]）・▶アイコン（text-[#6b7583]）
+- **閉じた状態ではカードヘッダー行のみ表示・本文は完全に非表示（hidden）にする**
+- カードヘッダー行（常に表示）: カテゴリバッジ（bg-[#dceee9] text-[#3d5a50]）・サイト名（text-[#6b7583] text-xs）・タイトル冒頭（日本語・text-sm text-[#2c3648]）・▶アイコン（text-[#6b7583]）
 - タイトルは truncate を使わず、最大2行で折り返す（line-clamp-2）
 - **タイトルは元記事URLへのリンク（\`<a href="URL" target="_blank" rel="noopener">\`）にする**
-- 展開後: 日本語フルタイトル（リンク付き）・日本語要旨（text-sm leading-relaxed）・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
+- **展開エリアは class="hidden" で初期非表示**にし、toggleNews() で hidden を付け外しする
+- 展開後に表示する内容: 日本語フルタイトル（リンク付き）・日本語要旨（text-sm leading-relaxed）・日本語箇条書きポイント3つ・「この動きの意味」・考察トグル
 - aria-expanded / aria-controls を正しく設定
 
 ### SECTION 2 — 構造図解（記事ごと）
