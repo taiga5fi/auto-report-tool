@@ -25,7 +25,7 @@ const QUERIES = [
 async function braveSearch(query, lang = 'en') {
   const params = new URLSearchParams({
     q: query,
-    count: '10',
+    count: '5',
     freshness: 'py',  // 過去1年
     search_lang: lang,
     extra_snippets: 'true',
@@ -119,6 +119,9 @@ export async function searchAndScore() {
       console.log(`  [${score}/10] ${result.title.slice(0, 60)}`);
 
       scored.push({ ...result, score, reason });
+
+      // Gemini無料枠レート制限(10RPM)対策: 7秒待機
+      await new Promise(r => setTimeout(r, 7000));
 
       if (score === 10) {
         console.log('✅ 10点の記事を発見！検索を停止します。');
