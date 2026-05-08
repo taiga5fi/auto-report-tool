@@ -8,12 +8,85 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const BRAVE_API_KEY = process.env.BRAVE_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const BRAVE_ENDPOINT = 'https://api.search.brave.com/res/v1/web/search';
-const TOPIC = 'auto-report-tool ベストプラクティス';
 
-// テスト用：クエリを1件・結果3件に絞る（動作確認後に元に戻す）
-const QUERIES = [
-  'auto report tool best practices 2026',
-];
+/**
+ * 曜日ごとのテーマ設定（JST基準）
+ * 各テーマには検索クエリを2〜3件設定
+ */
+const WEEKLY_THEMES = {
+  0: { // 日曜
+    name: '週間AIツール・自動化トレンド',
+    topic: 'AIツール・自動化の週間トレンド',
+    queries: [
+      'AI automation tools weekly trends 2026',
+      'best AI productivity tools this week',
+      'AIツール 自動化 最新トレンド 2026',
+    ],
+  },
+  1: { // 月曜
+    name: '自動レポート × 業務自動化',
+    topic: 'auto-report-tool ベストプラクティス',
+    queries: [
+      'auto report tool best practices 2026',
+      'automated reporting workflow design',
+      'レポート自動化 業務改善 事例 2026',
+    ],
+  },
+  2: { // 火曜
+    name: '電力・エネルギー業界最新動向',
+    topic: '電力・エネルギー業界の最新動向',
+    queries: [
+      'electricity energy industry news Japan 2026',
+      '再生可能エネルギー 電力市場 最新ニュース 2026',
+      'power grid smart energy trends 2026',
+    ],
+  },
+  3: { // 水曜
+    name: 'データ分析・BIツール活用',
+    topic: 'データ分析・BIツールのベストプラクティス',
+    queries: [
+      'data analytics BI tools best practices 2026',
+      'business intelligence dashboard automation',
+      'データ分析 可視化 ダッシュボード 事例 2026',
+    ],
+  },
+  4: { // 木曜
+    name: 'ビジネスDX・業務改善事例',
+    topic: 'DX・デジタル業務改善の最新事例',
+    queries: [
+      'digital transformation business automation case study 2026',
+      'DX 業務改善 成功事例 日本企業 2026',
+      'workflow automation ROI examples 2026',
+    ],
+  },
+  5: { // 金曜
+    name: '最新AIモデル・テクノロジー動向',
+    topic: '最新AIモデル・テクノロジーの動向',
+    queries: [
+      'latest AI model release technology news 2026',
+      'generative AI business use cases 2026',
+      '生成AI 最新動向 活用事例 2026',
+    ],
+  },
+  6: { // 土曜
+    name: '再生可能エネルギー・電力市場',
+    topic: '再生可能エネルギーと電力市場の動向',
+    queries: [
+      'renewable energy market trends Japan 2026',
+      '太陽光 風力 電力取引 市場動向 2026',
+      'energy storage battery grid technology 2026',
+    ],
+  },
+};
+
+/** 今日のテーマを取得（JST基準） */
+function getTodayTheme() {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+  const day = now.getDay();
+  return WEEKLY_THEMES[day];
+}
+
+export const todayTheme = getTodayTheme();
 
 /**
  * Gemini API呼び出しを最大3回リトライするラッパー
@@ -72,8 +145,9 @@ async function braveSearch(query, lang = 'en') {
  */
 async function scoreResult(genai, result) {
   const model = genai.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+  const { topic } = getTodayTheme();
   const prompt = `
-あなたはレポート自動化の専門家です。以下の記事を「${TOPIC}」という調査テーマへの有用性で1〜10点評価してください。
+あなたはレポート自動化の専門家です。以下の記事を「${topic}」という調査テーマへの有用性で1〜10点評価してください。
 
 【タイトル】${result.title}
 【URL】${result.url}
@@ -114,10 +188,13 @@ ${result.extra_snippets.length > 0 ? `【追加抜粋】${result.extra_snippets.
  */
 export async function searchAndScore() {
   const genai = new GoogleGenerativeAI(GEMINI_API_KEY);
+  const theme = getTodayTheme();
+  console.log(`📅 今日のテーマ: ${theme.name}`);
+
   const scored = [];
   const seenUrls = new Set();
 
-  for (const query of QUERIES) {
+  for (const query of theme.queries) {
     const lang = /[ぁ-ん]/.test(query) ? 'ja' : 'en';
     console.log(`🔍 検索中: "${query}"`);
 

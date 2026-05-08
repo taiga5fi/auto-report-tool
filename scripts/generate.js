@@ -1,4 +1,4 @@
-﻿/**
+/**
  * generate.js
  * スコアリング済み記事リストをGemini APIに渡し、
  * 以下テンプレートと同一の構造・デザインのHTMLを生成する。
@@ -6,6 +6,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
+import { todayTheme } from './search.js';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -81,7 +82,7 @@ ${articleSummaries}
         <time datetime="${dates.iso}" class="text-[#d1e0dc] text-sm">${dates.ja}</time>
       </div>
       <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">自動レポートツール ベストプラクティス調査</h1>
-      <p class="text-[#d1e0dc] text-sm sm:text-base">テーマ：<span class="text-white font-medium">auto-report-tool × 自動化設計</span></p>
+      <p class="text-[#d1e0dc] text-sm sm:text-base">テーマ：<span class="text-white font-medium">${todayTheme.name}</span></p>
     </div>
   </header>
 
