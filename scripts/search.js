@@ -49,7 +49,7 @@ async function braveSearch(query, lang = 'en') {
  * Gemini APIで記事を1〜10点でスコアリングする
  */
 async function scoreResult(genai, result) {
-  const model = genai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genai.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
   const prompt = `
 あなたはレポート自動化の専門家です。以下の記事を「${TOPIC}」という調査テーマへの有用性で1〜10点評価してください。
 
