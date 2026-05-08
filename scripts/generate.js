@@ -488,6 +488,11 @@ ${articleSummaries}
         resultTitle.classList.replace('text-[#15803d]', 'text-[#c53030]');
       }
       result.classList.remove('hidden');
+      // 解説を自動で開く
+      const resultBody = document.getElementById(questionId + '-result-body');
+      const resultToggle = document.getElementById(questionId + '-result-toggle');
+      if (resultBody) resultBody.classList.remove('hidden');
+      if (resultToggle) resultToggle.textContent = '▼ 解説を閉じる';
       const answerBtn = document.querySelector('button[data-qid="' + questionId + '"]');
       answerBtn.disabled = true;
       answerBtn.classList.add('opacity-40', 'cursor-not-allowed');
