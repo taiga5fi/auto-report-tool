@@ -1,0 +1,38 @@
+name: 自動レポート生成・公開
+
+on:
+  schedule:
+    # 毎日 JST 09:00 (UTC 00:00) に実行
+    - cron: '0 0 * * *'
+  # 手動テスト用（GitHub ActionsのUIから「Run workflow」ボタンで実行可能）
+  workflow_dispatch:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.js のセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 依存パッケージをインストール
+        run: npm ci
+
+      - name: surge CLI をグローバルインストール
+        run: npm install -g surge
+
+      - name: レポート生成・デプロイ・通知を実行
+        run: node scripts/run.js
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_TO: ${{ secrets.NOTIFY_TO }}

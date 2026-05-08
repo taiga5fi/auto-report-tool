@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIT①②③の違い - 電力市場制度図解</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+
+    .header-gradient {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .analogy-box {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-left: 4px solid #f97316;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .analogy-it {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0ea5e9;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .mechanism-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-left: 4px solid #3b82f6;
+      padding: 1.25rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.75rem 0;
+    }
+
+    .misconception-wrong {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-left: 4px solid #ef4444;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .misconception-correct {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #22c55e;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      color: white;
+      padding: 1.75rem 2rem;
+      border-radius: 1rem;
+      margin: 1rem 0;
+    }
+
+    /* FIT世代カード */
+    .fit-card {
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border-width: 2px;
+      border-style: solid;
+    }
+    .fit-card-1 {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 30%, #fef3c7 100%);
+      border-color: #d97706;
+    }
+    .fit-card-2 {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 30%, #dbeafe 100%);
+      border-color: #2563eb;
+    }
+    .fit-card-3 {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 30%, #d1fae5 100%);
+      border-color: #059669;
+    }
+    .fit-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .fit-badge-1 { background: #d97706; color: white; }
+    .fit-badge-2 { background: #2563eb; color: white; }
+    .fit-badge-3 { background: #059669; color: white; }
+
+    /* タイムライン */
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0.45rem;
+      top: 1.5rem;
+      bottom: -1.5rem;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    /* 比較表 */
+    .compare-table th {
+      background: #1e293b;
+      color: white;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .compare-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.9rem;
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #f8fafc; }
+    .cell-1 { background: #fffbeb; }
+    .cell-2 { background: #eff6ff; }
+    .cell-3 { background: #f0fdf4; }
+
+    details > summary {
+      cursor: pointer; list-style: none;
+      padding: 0.6rem 1rem;
+      background: #f1f5f9;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary { border-radius: 0.5rem 0.5rem 0 0; }
+    details > .det-body {
+      border: 1px solid #e2e8f0;
+      border-top: none;
+      border-radius: 0 0 0.5rem 0.5rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+
+  <!-- ヘッダー -->
+  <header class="header-gradient text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="bg-white/20 text-white text-sm font-medium px-3 py-1 rounded-full">電力市場制度図解</span>
+        <span class="bg-emerald-500/70 text-white text-sm font-medium px-3 py-1 rounded-full">FIT制度の変遷</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">FIT①②③の違いとは</h1>
+      <p class="mt-2 text-lg opacity-90">「高い固定価格」→「入札競争」→「市場自立」へ進化した3世代の再エネ買取制度</p>
+      <p class="mt-1 text-sm opacity-70">直感 → 仕組み → 比較 → よくある誤解 の順で理解を積み上げる</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション-1: FITの基本構造（前提）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="info" class="w-6 h-6 text-slate-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">前提：FIT制度とは（復習）</h2>
+          <p class="text-gray-500">①②③の違いを理解する前に「誰が誰に払うか」を確認する</p>
+        </div>
+      </div>
+
+      <!-- お金の流れ -->
+      <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 mb-4">
+        <div class="font-bold text-slate-700 mb-3 text-sm">FITのお金の流れ（シンプル版）</div>
+        <div class="flex flex-wrap items-center justify-center gap-2 text-sm font-medium">
+          <div class="text-center p-2 rounded-lg bg-green-100 border border-green-300 text-green-800">
+            <i data-lucide="sun" class="w-5 h-5 mx-auto mb-1"></i>
+            発電事業者<br><span class="text-xs font-normal">（太陽光・風力など）</span>
+          </div>
+          <div class="text-center text-gray-500 text-xs">
+            <i data-lucide="arrow-right" class="w-5 h-5 mx-auto mb-1"></i>
+            電気を売る<br>→ 固定価格で収入
+          </div>
+          <div class="text-center p-2 rounded-lg bg-blue-100 border border-blue-300 text-blue-800">
+            <i data-lucide="building-2" class="w-5 h-5 mx-auto mb-1"></i>
+            小売電気事業者<br><span class="text-xs font-normal">（買取義務者）</span>
+          </div>
+          <div class="text-center text-gray-500 text-xs">
+            <i data-lucide="arrow-right" class="w-5 h-5 mx-auto mb-1"></i>
+            電気料金に<br>賦課金を上乗せ
+          </div>
+          <div class="text-center p-2 rounded-lg bg-yellow-100 border border-yellow-300 text-yellow-800">
+            <i data-lucide="users" class="w-5 h-5 mx-auto mb-1"></i>
+            電気を使う人<br><span class="text-xs font-normal">（一般消費者・企業）</span>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3 text-center">「国が直接払う」のではなく、<strong>電気代の中に含まれる「再エネ賦課金」として国民全員が負担している</strong></p>
+      </div>
+
+      <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+        <div class="flex items-start gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+          <span><strong>FIT①②③の違いは何が変わる話か？</strong>：「発電事業者への買取価格の決め方・認定の条件」が変わる話。お金が「国民負担」である構造は変わらない。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション0: まず3行で把握
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="map" class="w-6 h-6 text-emerald-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず3行で把握する</h2>
+          <p class="text-gray-500">FIT①②③は「制度が改正されるたびに変わった3つの時代」</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="fit-card fit-card-1">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="fit-badge fit-badge-1">①</span>
+            <div>
+              <div class="font-bold text-amber-900">2012〜2016年度</div>
+              <div class="text-xs text-amber-700">旧FIT・高価格保証時代</div>
+            </div>
+          </div>
+          <p class="text-sm text-amber-900">国が価格を固定して、認定さえ得れば<strong>高い買取価格が約束</strong>された時代。太陽光ブームが起きたが、未稼働案件が急増した。</p>
+        </div>
+        <div class="fit-card fit-card-2">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="fit-badge fit-badge-2">②</span>
+            <div>
+              <div class="font-bold text-blue-900">2017〜2021年度</div>
+              <div class="text-xs text-blue-700">新認定・入札制度導入期</div>
+            </div>
+          </div>
+          <p class="text-sm text-blue-900">大規模太陽光に<strong>入札制を導入</strong>し、価格競争で調達。認定要件も厳格化（新認定制度）。未稼働問題に対処した改革期。</p>
+        </div>
+        <div class="fit-card fit-card-3">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="fit-badge fit-badge-3">③</span>
+            <div>
+              <div class="font-bold text-emerald-900">2022年度〜</div>
+              <div class="text-xs text-emerald-700">FIP移行・FIT縮小期</div>
+            </div>
+          </div>
+          <p class="text-sm text-emerald-900">大規模電源はFIT（固定）ではなく<strong>FIP（市場連動＋補填）へ移行</strong>。FITは小規模・特定電源に限定。自立した市場参加が求められる。<br><span class="text-xs text-emerald-600">※FIPの詳細は下のセクション6で説明</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション1: まず直感でつかむ（アナロジー）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-orange-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず直感でつかむ</h2>
+          <p class="text-gray-500">知っているものに例えて理解する</p>
+        </div>
+      </div>
+
+      <!-- アナロジー1: 新卒採用の保護制度 -->
+      <div class="analogy-box">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="users" class="w-5 h-5 text-orange-600"></i>
+          <span class="font-bold text-orange-800">例え話：新卒採用の保護制度の変化</span>
+        </div>
+        <p class="text-gray-700 mb-3">
+          大学卒業後の初任給が「時代によって変わった」と思ってみてください。
+        </p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>FIT①</strong>：「初任給は全員28万円固定」。就職さえすれば高い給料が保証される。参入者が殺到した。</span>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>FIT②</strong>：「初任給はオークションで決まる」。最も低い給料で働くと言った人が採用される（入札制）。書類審査も厳しくなった。</span>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>FIT③</strong>：「市場の相場で働いて、最低保証分だけ補填する」（FIP）。自力で市場と交渉する必要が出てきた。</span>
+          </div>
+        </div>
+        <div class="mt-3 p-2 bg-orange-100 rounded text-xs text-orange-800">
+          ポイント：①→②→③の順に「国の保護が薄くなり、市場競争へ自立していく」流れ
+        </div>
+      </div>
+
+      <!-- アナロジー2: 農家とスーパーの仕入れ契約 -->
+      <div class="analogy-it">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="shopping-cart" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-bold text-sky-800">別の例え：農家とスーパーの仕入れ契約</span>
+        </div>
+        <p class="text-gray-700 mb-2">
+          「スーパー（社会）が農家（発電事業者）から野菜（電気）を仕入れる」と思ってみてください。
+        </p>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <div><strong>FIT①</strong>：「全部1kg=500円で買い取ります」とスーパーが宣言。農家は市場相場を気にせず安心して育てられる。でも農家が増えすぎてスーパーの仕入れコストが膨張した。</div>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <div><strong>FIT②</strong>：「最も安い値段を提示した農家から買います（競争入札）」に変更。農家は「採用してもらうために」低い価格を提示する競争をする。結果、仕入れ価格が大幅に下がった。</div>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <div><strong>FIT③（FIP）</strong>：「農家が市場に自分で出荷し、目標価格500円に足りなかった分だけ補填します」。農家は市場の動きを見ながら出荷量・タイミングを自分で判断する必要がある。</div>
+          </div>
+        </div>
+        <div class="mt-3 p-2 bg-sky-100 rounded text-xs text-sky-800">
+          ↔ 対応表：スーパー＝小売電気事業者（国民負担）、農家＝発電事業者、野菜＝電気、仕入れ価格＝買取価格
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション2: 3世代の変遷タイムライン
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-branch" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">なぜ3つに分かれたのか</h2>
+          <p class="text-gray-500">問題が起きるたびに制度が改正されてきた歴史</p>
+        </div>
+      </div>
+
+      <div class="pl-2">
+        <!-- FIT① -->
+        <div class="timeline-item">
+          <div class="timeline-dot bg-amber-500"></div>
+          <div class="ml-4">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="fit-badge fit-badge-1 w-7 h-7 text-sm">①</span>
+              <span class="font-bold text-lg text-gray-800">FIT① 2012年7月スタート</span>
+              <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">旧認定制度</span>
+            </div>
+            <div class="mechanism-box" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #d97706;">
+              <div class="font-bold text-amber-800 mb-2">背景：再エネを一気に普及させたい</div>
+              <p class="text-gray-700 text-sm">東日本大震災後、原発停止による電力不足と脱化石への転換が急務に。再エネを急拡大させるため、<strong>国が高い固定価格を保証</strong>した。太陽光は当初40円/kWh。</p>
+              <div class="mt-3 p-2 bg-amber-50 rounded text-xs text-amber-900">
+                <div class="font-bold mb-1">起きた問題：未稼働案件の急増</div>
+                認定を取っても発電せずに持ち続ける「権利の転売」が横行。<br>
+                ⚠️ <strong>系統（送電線）には有限の「接続枠」がある</strong>。これはサーバーのポートのようなもので、予約だけ押さえて使わない案件が増えると、実際に発電したい事業者が接続できなくなる。賦課金（国民負担）だけが膨らんだ。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FIT② -->
+        <div class="timeline-item">
+          <div class="timeline-dot bg-blue-500"></div>
+          <div class="ml-4">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="fit-badge fit-badge-2 w-7 h-7 text-sm">②</span>
+              <span class="font-bold text-lg text-gray-800">FIT② 2017年4月 法改正後</span>
+              <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">新認定制度・入札制</span>
+            </div>
+            <div class="mechanism-box" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-color: #2563eb;">
+              <div class="font-bold text-blue-800 mb-2">背景：コスト削減と未稼働対策</div>
+              <p class="text-gray-700 text-sm">①の反省から、<strong>2つの大改革</strong>が入った。<br>
+                ①「設備認定」→「<strong>事業計画認定</strong>」（事業者が責任ある計画を出す義務）<br>
+                ②大規模太陽光に<strong>入札制を導入</strong>（最低価格を提示した者が落札）
+              </p>
+              <div class="mt-3 p-2 bg-blue-50 rounded text-xs text-blue-900">
+                <div class="font-bold mb-1">起きた問題：コストは下がったが複雑化</div>
+                入札制で太陽光の価格は劇的に下がった。一方で「①の旧認定案件が大量に残存」し、新旧の案件が混在。未稼働の古い案件が系統を塞ぐ問題は残った。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FIT③ -->
+        <div class="timeline-item">
+          <div class="timeline-dot bg-emerald-500"></div>
+          <div class="ml-4">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="fit-badge fit-badge-3 w-7 h-7 text-sm">③</span>
+              <span class="font-bold text-lg text-gray-800">FIT③ 2022年4月〜現在</span>
+              <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">FIP本格導入・認定失効</span>
+            </div>
+            <div class="mechanism-box" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #059669;">
+              <div class="font-bold text-emerald-800 mb-2">背景：再エネを「市場に自立させる」</div>
+              <p class="text-gray-700 text-sm">固定価格は再エネを市場から切り離してしまう。電力の安定供給には、再エネ事業者が<strong>需給バランスを意識して発電する</strong>必要がある。そこで大規模電源は<strong>FIP制度（市場連動＋プレミアム）</strong>へ移行。FIT新規は小規模・特定電源に限定された。また<strong>認定失効制度</strong>が本格運用され、期限を守らない案件は強制失効。</p>
+              <div class="mt-3 p-2 bg-emerald-50 rounded text-xs text-emerald-900">
+                <div class="font-bold mb-1">現在の状況</div>
+                ①の高価格案件はまだ調達期間中で稼働継続中のものが多い。②の案件も現役。③のFIP案件が新規では主流。「①②③が同時に存在する」のが2024〜2026年の実態。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション3: 違いの比較表
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="table" class="w-6 h-6 text-purple-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">主な違いを並べて比べる</h2>
+          <p class="text-gray-500">5つの観点で3世代を比較</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="compare-table w-full border-collapse rounded-xl overflow-hidden text-sm">
+          <thead>
+            <tr>
+              <th class="text-left" style="width:22%;">観点</th>
+              <th class="text-center" style="width:26%;">
+                <span class="fit-badge fit-badge-1 w-6 h-6 text-base mr-1">①</span>
+                FIT① (〜2016年度)
+              </th>
+              <th class="text-center" style="width:26%;">
+                <span class="fit-badge fit-badge-2 w-6 h-6 text-base mr-1">②</span>
+                FIT② (2017〜2021年度)
+              </th>
+              <th class="text-center" style="width:26%;">
+                <span class="fit-badge fit-badge-3 w-6 h-6 text-base mr-1">③</span>
+                FIT③ (2022年度〜)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="tag" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                価格の決め方
+              </td>
+              <td class="cell-1">
+                <div class="font-bold text-amber-700">国が固定で告示</div>
+                <div class="text-gray-600 text-xs mt-1">太陽光は40円/kWh前後（当初）。電源・規模ごとに国が毎年設定。認定を得れば確定。</div>
+              </td>
+              <td class="cell-2">
+                <div class="font-bold text-blue-700">大規模は入札で競争</div>
+                <div class="text-gray-600 text-xs mt-1">1MW以上の太陽光は入札制。低い価格を提示した事業者が落札。小規模は告示価格継続（ただし逓減）。</div>
+              </td>
+              <td class="cell-3">
+                <div class="font-bold text-emerald-700">FIPに移行（市場連動）</div>
+                <div class="text-gray-600 text-xs mt-1">大規模電源は市場価格＋プレミアムのFIP。FIT残存は10kW未満の太陽光など小規模・特定電源のみ。</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="file-check" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                認定の種類
+              </td>
+              <td class="cell-1">
+                <div class="font-bold text-amber-700">設備認定（旧法）</div>
+                <div class="text-gray-600 text-xs mt-1">「この設備がFIT対象か」を確認するだけ。事業計画の審査はなし。ゆるい基準が未稼働問題を招いた。</div>
+              </td>
+              <td class="cell-2">
+                <div class="font-bold text-blue-700">事業計画認定（新法）</div>
+                <div class="text-gray-600 text-xs mt-1">「いつまでに稼働するか」の事業計画提出が必要。審査が厳しくなり、取り組む意欲のない事業者を排除。</div>
+              </td>
+              <td class="cell-3">
+                <div class="font-bold text-emerald-700">事業計画認定（厳格化）</div>
+                <div class="text-gray-600 text-xs mt-1">②をさらに厳格化。期限内に運転開始できなければ「認定失効」。一度取った認定が無効になる仕組みが本格運用。</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="clock" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                調達期間
+              </td>
+              <td class="cell-1">
+                <div class="text-gray-700 text-xs">太陽光（10kW以上）は<strong>20年</strong>（運転開始日から起算）。認定の買取価格で調達期間終了まで売電できる。</div>
+              </td>
+              <td class="cell-2">
+                <div class="text-gray-700 text-xs">同じく<strong>20年</strong>（運転開始日から起算・入札落札価格で固定）。ただし稼働開始の期限あり。期限超過は減額ペナルティも。</div>
+              </td>
+              <td class="cell-3">
+                <div class="text-gray-700 text-xs">FITは同様。FIPは<strong>20年</strong>のプレミアム期間。<strong>起算点は運転開始日から</strong>（認定日からではない）。</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="trending-down" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                課題・問題
+              </td>
+              <td class="cell-1">
+                <div class="text-amber-800 text-xs"><strong>未稼働案件の急増</strong>。権利の転売が横行。賦課金（国民負担）が膨張。系統接続枠を占有。</div>
+              </td>
+              <td class="cell-2">
+                <div class="text-blue-800 text-xs">新旧認定案件が混在し複雑化。①の旧案件が系統を占有したまま残存。手続きの煩雑化。</div>
+              </td>
+              <td class="cell-3">
+                <div class="text-emerald-800 text-xs">FIP参加には市場知識・インバランス<span class="underline decoration-dotted cursor-help" title="計画した発電量と実際の発電量がずれた際に発生するペナルティ的な調整コスト">リスク</span>対応が必要で、小規模事業者の負担が増加。</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="zap" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                市場との関係
+              </td>
+              <td class="cell-1">
+                <div class="text-amber-800 text-xs">市場から<strong>完全に切り離し</strong>。どんな市場価格でも固定価格が入る。事業者は市場を意識しない。</div>
+              </td>
+              <td class="cell-2">
+                <div class="text-blue-800 text-xs">入札で「参入時の競争」は市場的。しかし落札後は固定価格で、<strong>運営中は市場から切り離し</strong>。</div>
+              </td>
+              <td class="cell-3">
+                <div class="text-emerald-800 text-xs">FIPは<strong>市場に直接参加</strong>。市場価格が高いとプレミアムが減り、低いと増える。需給バランスを意識した運転が必要。</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション4: 「今の案件がどの世代か」の見分け方
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="search" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">実務での見分け方</h2>
+          <p class="text-gray-500">「この案件はFIT①②③のどれ？」を判断するヒント</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">1</span>
+            FITポータル（資源エネルギー庁）の認定情報を見る
+          </div>
+          <p class="text-gray-700 text-sm">「事業計画認定番号」の形式が新法（②以降）か旧法（①）かで分かる。また調達価格・調達期間も記載されている。</p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">2</span>
+            調達価格の水準で判断
+          </div>
+          <p class="text-gray-700 text-sm">太陽光（10kW以上）の調達価格が<strong>27円以上</strong>なら①（旧認定）の可能性が高い。14〜25円台は②、FIPなら③。ただし電源種・規模によって異なる。</p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">3</span>
+            「FIT」か「FIP」かを確認
+          </div>
+          <p class="text-gray-700 text-sm">2022年4月以降に新規認定された大規模太陽光・風力はFIPが主流。認定通知書や契約書に「FIP」と記載されていれば③相当。</p>
+        </div>
+      </div>
+
+      <div class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+        <div class="flex items-start gap-2">
+          <i data-lucide="info" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold">重要：「FIT①②③」は公式用語ではない</span><br>
+            法律・告示に「FIT①②③」という区分は存在しない。現場での通称・略称として使われる。会社・文書によって指す範囲がずれることがあるため、<strong>使う場面では定義を確認すること</strong>。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション5: よくある誤解
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">よくある誤解</h2>
+          <p class="text-gray-500">混同しやすいポイントと正しい理解</p>
+        </div>
+      </div>
+
+      <!-- 誤解1 -->
+      <div class="mb-6">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：「新しい制度に切り替わった」と聞くと「古いものは廃止」と思いがち</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解①</span>
+          </div>
+          <p class="text-gray-700">「FIT③が始まったので、FIT①・②の案件はなくなった（廃止された）」</p>
+        </div>
+        <div class="flex justify-center my-2">
+          <i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i>
+        </div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">FIT①②の案件は<strong>認定時の条件（調達価格・期間）のまま継続稼働中</strong>。調達期間は<strong>運転開始日から</strong>20年なので、2012年頃に運転開始した案件は2032年頃まで①の価格で売電している。①②③は「新規認定のルール」が変わっただけで、既存案件は変わらない。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：「調達期間」は認定時に確定した権利であり、制度改正で遡及適用はされない。起算点は認定日ではなく運転開始日。</p>
+        </div>
+      </div>
+
+      <!-- 誤解2 -->
+      <div class="mb-6">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：「FIT③＝2022年以降」と「FIP」が同時期に登場するから</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解②</span>
+          </div>
+          <p class="text-gray-700">「FIT③＝FIPのことだ」</p>
+        </div>
+        <div class="flex justify-center my-2">
+          <i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i>
+        </div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">FITとFIPは<strong>別の制度</strong>。FIT③は「2022年以降のFIT（固定価格買取）」を指す場合の呼び方であり、FIPは市場連動の全く別の制度。「FIT③はFITの縮小期にあたる時代」で、その同じ時代にFIPが主役になっている。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：FIP（フィードインプレミアム）は市場価格＋差額プレミアムで、買取価格が固定されるFITとは根本的に仕組みが異なる。</p>
+        </div>
+      </div>
+
+      <!-- 誤解3 -->
+      <div class="mb-6">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：「認定＝すぐに売電できる権利」と思いやすい</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解③</span>
+          </div>
+          <p class="text-gray-700">「FIT認定を取ればいつでも発電を始めれば高い価格で売れる」</p>
+        </div>
+        <div class="flex justify-center my-2">
+          <i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i>
+        </div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">②以降は<strong>運転開始期限</strong>があり、期限を超えると<strong>調達価格が減額</strong>（さらに③では<strong>認定失効</strong>）。「認定＝永遠に権利が保全される」ではない。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：未稼働問題の教訓から、②以降は「使う気がない認定は失効させる」方向に制度が変わった。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション6: FIPとの関係（補足）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-compare" class="w-6 h-6 text-teal-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">FIT③時代のFIPとの関係</h2>
+          <p class="text-gray-500">「FITが縮小した穴をFIPが埋める」構図</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%); border: 2px solid #d97706; border-radius: 0.75rem; padding: 1.25rem;">
+          <div class="font-bold text-amber-800 mb-2 flex items-center gap-2">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            FIT（固定価格買取）
+          </div>
+          <ul class="text-sm text-amber-900 space-y-1">
+            <li>• 売電価格が<strong>固定</strong>（認定時に確定）</li>
+            <li>• 市場価格がどう動いても収入は変わらない</li>
+            <li>• 発電事業者は市場を意識しなくていい</li>
+            <li>• ③以降は<strong>小規模・特定電源に限定</strong></li>
+          </ul>
+          <div class="mt-3 p-2 bg-amber-100 rounded text-xs text-amber-800">
+            収入イメージ：市場価格が3円でも30円でも→<strong>固定15円/kWhで売電</strong>
+          </div>
+        </div>
+        <div style="background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%); border: 2px solid #059669; border-radius: 0.75rem; padding: 1.25rem;">
+          <div class="font-bold text-emerald-800 mb-2 flex items-center gap-2">
+            <i data-lucide="trending-up" class="w-4 h-4"></i>
+            FIP（プレミアム上乗せ）
+          </div>
+          <ul class="text-sm text-emerald-900 space-y-1">
+            <li>• 市場で自分で売り、<strong>目標価格との差額プレミアムを受け取る</strong></li>
+            <li>• 市場価格が高いとプレミアムは減るが<strong>トータル収入は大きく変わらない</strong></li>
+            <li>• 発電事業者が需給バランスを意識するようになる</li>
+            <li>• ③以降の<strong>大規模電源の主役</strong></li>
+          </ul>
+          <div class="mt-3 p-2 bg-emerald-100 rounded text-xs text-emerald-800">
+            収入イメージ：目標15円/kWh の場合<br>
+            市場8円 → <strong>8円＋プレミアム7円＝15円</strong><br>
+            市場20円 → <strong>20円＋プレミアム0円≒20円（上振れあり）</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-gray-600">
+        <div class="font-bold text-slate-700 mb-2 flex items-center gap-2">
+          <i data-lucide="lightbulb" class="w-4 h-4 text-slate-500"></i>
+          なぜFIPに移行するのか？
+        </div>
+        <p>FITのままだと「発電できれば高い値段で売れる」ので、電気が余っている昼間でも構わず発電してしまう。これが需給バランスの崩れ（出力制御）につながる。FIPなら市場価格が下がれば収入も減るため、事業者自身が「今は出力を下げよう」と判断するインセンティブが生まれる。</p>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション7: 人への説明まとめ
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">人への説明まとめ</h2>
+          <p class="text-gray-500">30秒で説明するなら</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="text-sm opacity-75 mb-2">30秒バージョン（そのまま使える）</div>
+        <p class="text-lg font-medium leading-relaxed">
+          「FIT①②③は、日本の再エネ固定価格買取制度の『世代区分』です。<br><br>
+          ①は2012年スタートの初期版で、国が高い固定価格を保証していた時代。<br>
+          ②は2017年以降の改革版で、大規模太陽光に入札制を導入し価格競争させた時代。<br>
+          ③は2022年以降で、大規模電源はFIT（固定）からFIP（市場連動）に移行した時代です。<br><br>
+          ①②③は廃止になったわけではなく、それぞれの案件が認定時の条件のまま今も稼働しています。」
+        </p>
+      </div>
+
+      <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-700 mb-3 flex items-center gap-2">
+          <i data-lucide="help-circle" class="w-4 h-4 text-slate-500"></i>
+          理解度チェック（自問自答）
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>FIT①②③が生まれた理由（どんな問題があって制度が変わったか）を言えるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>FIT③が始まってもFIT①②の案件は続いている、と説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>FIT③とFIPの違いを説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「入札制」と「固定価格告示」の違いをアナロジーで説明できるか？</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-400">
+    <p>FIT①②③の違い - 電力市場制度図解 | 個人学習用</p>
+    <p class="text-xs mt-1">※「FIT①②③」は法律・告示の公式区分ではなく、制度の世代を表す現場通称です</p>
+  </footer>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

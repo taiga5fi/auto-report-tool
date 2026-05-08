@@ -1,0 +1,13 @@
+{
+  "name": "auto-report-tool",
+  "version": "1.0.0",
+  "description": "毎日自動でWebを検索・スコアリングしてHTMLレポートを生成・公開するツール",
+  "type": "module",
+  "scripts": {
+    "report": "node scripts/run.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "nodemailer": "^6.9.16"
+  }
+}

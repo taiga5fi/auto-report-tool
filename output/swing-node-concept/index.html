@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スイングノードとは ─ 電力系統概念図解</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+    .section-card {
+      background: white; border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      padding: 2rem; margin-bottom: 2rem;
+    }
+    .term-card {
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+      border-left: 4px solid #8b5cf6;
+      padding: 1rem 1.25rem; border-radius: 0.5rem; margin: 0.5rem 0;
+    }
+    .analogy-orange {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-left: 4px solid #f97316;
+      padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 0.75rem 0;
+    }
+    .analogy-sky {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0ea5e9;
+      padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 0.75rem 0;
+    }
+    .analogy-green {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #22c55e;
+      padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 0.75rem 0;
+    }
+    .mechanism-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-left: 4px solid #3b82f6;
+      padding: 1.1rem 1.4rem; border-radius: 0.75rem; margin: 0.6rem 0;
+    }
+    .wrong-box {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-left: 4px solid #ef4444;
+      padding: 1rem 1.5rem; border-radius: 0.75rem; margin: 0.5rem 0;
+    }
+    .correct-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #22c55e;
+      padding: 1rem 1.5rem; border-radius: 0.75rem; margin: 0.5rem 0;
+    }
+    .summary-box {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1d6fa5 100%);
+      color: white; padding: 1.75rem 2rem; border-radius: 1rem; margin: 1rem 0;
+    }
+    details > summary {
+      cursor: pointer; list-style: none;
+      padding: 0.6rem 1rem; background: #f1f5f9; border-radius: 0.5rem;
+      font-weight: 600; color: #475569; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary { border-radius: 0.5rem 0.5rem 0 0; }
+    details > .det-body {
+      border: 1px solid #e2e8f0; border-top: none;
+      border-radius: 0 0 0.5rem 0.5rem; padding: 1rem;
+      font-size: 0.9rem; color: #374151;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+
+  <header class="header-gradient text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="bg-white/20 text-white text-sm font-medium px-3 py-1 rounded-full">電力系統概念図解</span>
+        <span class="bg-blue-500/70 text-white text-sm font-medium px-3 py-1 rounded-full">自己学習用</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">スイングノードとは</h1>
+      <p class="mt-2 text-lg opacity-90 font-medium">潮流計算における「基準点」であり、誤差を吸収する場所ではない</p>
+      <p class="mt-2 text-sm opacity-70">用語の確認 → 直感 → 仕組み → よくある誤解 の順で積み上げる</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- ==============================
+         Section 0: 先に用語をおさえる
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="book-marked" class="w-6 h-6 text-purple-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">先に用語をおさえる</h2>
+          <p class="text-gray-500">この4語がわかれば後の説明が全部読める</p>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="zap" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">母線（バス）とは？</div>
+            <p class="text-gray-700 text-sm mt-1">
+              変電所や発電所の「電気の接続ポイント」。ネットワークで言うノード（節点）にあたる。
+              複数の送電線・発電機・負荷がここでつながる。<br>
+              <span class="text-purple-600 text-xs font-medium">= 電力系統のネットワーク上の「ノード」</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="activity" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">位相角（θ）とは？</div>
+            <p class="text-gray-700 text-sm mt-1">
+              交流電気は電圧が波のように変化する（サイン波）。どの母線も同じ周波数で変化しているが、
+              波のピークのタイミングが微妙にズレている。この「ズレ具合」を角度（度またはラジアン）で表したのが位相角。<br>
+              <span class="text-gray-500 text-xs">例：θ = 0°（基準）、θ = −15°（基準より少し遅れている）</span><br>
+              <strong>重要：</strong> 位相角は「絶対値」ではなく「基準点からの相対値」なので、どこかに「θ = 0」の基準が必要。
+              <span class="text-purple-600 text-xs font-medium"> ← これがスイングノードの役割</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="gauge" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">有効電力（P）と無効電力（Q）とは？</div>
+            <p class="text-gray-700 text-sm mt-1">
+              交流電気には2種類の電力がある。<br>
+              <strong>有効電力 P</strong>：実際に「仕事」をする電力。電気機器を動かす。単位はW（ワット）。<br>
+              <strong>無効電力 Q</strong>：コイルやコンデンサが蓄えて吐き出すだけで仕事をしない電力。電圧を安定させる役割。単位はvar（バール）。<br>
+              <span class="text-purple-600 text-xs font-medium">= P が「仕事する電力」、Q が「電圧を保つための電力」</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="git-merge" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">潮流とは？</div>
+            <p class="text-gray-700 text-sm mt-1">
+              系統内の各送電線に流れる電力（電気の流れ方）のこと。
+              「潮流計算」は、各母線の電圧・位相角を求めることで「どこにどれだけ電気が流れているか」を計算すること。<br>
+              <span class="text-purple-600 text-xs font-medium">= 電力ネットワーク上の「トラフィック解析」に相当</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 1: まず直感でつかむ
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-orange-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず直感でつかむ</h2>
+          <p class="text-gray-500">2つの側面を別々のアナロジーで理解する</p>
+        </div>
+      </div>
+
+      <!-- 側面1: 基準点 -->
+      <div class="mb-5">
+        <div class="bg-slate-100 rounded-lg px-4 py-2 mb-3 inline-block">
+          <span class="font-bold text-slate-700 text-sm">側面① 位相角の「基準点」としての役割</span>
+        </div>
+
+        <div class="analogy-sky">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="cpu" class="w-5 h-5 text-sky-600"></i>
+            <span class="font-bold text-sky-800">電子回路の「グラウンド（GND）」</span>
+          </div>
+          <p class="text-gray-700 text-sm mb-3">
+            回路の各ノードの電圧を計算するとき、どこか1点を「0V（グラウンド）」に固定します。
+            他のノードの電圧はこのゼロを基準にした相対値です。<br>
+            <strong>グラウンドは「ノイズを吸収する場所」ではなく、「計算の出発点（ゼロ基準）」です。</strong>
+          </p>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-sky-100 rounded p-2"><strong>回路解析：</strong> GND = 電圧 0V に固定した基準ノード</div>
+            <div class="bg-sky-100 rounded p-2"><strong>潮流計算：</strong> スイングノード = 位相角 θ = 0 に固定した基準母線</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 側面2: 電力調整 -->
+      <div>
+        <div class="bg-slate-100 rounded-lg px-4 py-2 mb-3 inline-block">
+          <span class="font-bold text-slate-700 text-sm">側面② 有効電力 P が「最後に決まる調整項」としての役割</span>
+        </div>
+
+        <div class="analogy-green">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="calculator" class="w-5 h-5 text-green-600"></i>
+            <span class="font-bold text-green-800">会計の「差額を埋める調整項」</span>
+          </div>
+          <p class="text-gray-700 text-sm mb-3">
+            10人の食事代を計算するとき、9人分を先に決めて「残りは幹事が払う」とします。
+            幹事の金額は「全体の帳簿を閉じるために最後に決まる値」であり、「誤差や余りもの」ではありません。
+          </p>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-green-100 rounded p-2"><strong>会計：</strong> 幹事の負担額 = 9人が払った後の「残り」として決まる</div>
+            <div class="bg-green-100 rounded p-2"><strong>潮流計算：</strong> スイングノードの P = 他の母線の P を全部決めた後の「残り」として決まる</div>
+          </div>
+          <p class="text-gray-500 text-xs mt-2">→ これは<strong>誤差ではなく</strong>、系統全体の電力収支（発電 = 消費 + 損失）を成立させるための正当な解。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 2: 仕組みを理解する
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-branch" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">仕組みを理解する</h2>
+          <p class="text-gray-500">潮流計算でスイングノードは何をしているか</p>
+        </div>
+      </div>
+
+      <div class="mechanism-box mb-4">
+        <div class="font-bold text-blue-800 mb-2">潮流計算の目的</div>
+        <p class="text-gray-700 text-sm">
+          電力系統の各母線（接続ポイント）の<strong>電圧の大きさ</strong>と<strong>位相角</strong>を求める計算。
+          これが分かると「どの送電線にどれだけ電力が流れているか」がわかる。
+        </p>
+      </div>
+
+      <!-- ノードの種類テーブル -->
+      <h3 class="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">
+        <i data-lucide="table" class="w-4 h-4 text-blue-500"></i>
+        母線（ノード）の種類と「固定する値」「計算で求める値」の整理
+      </h3>
+      <p class="text-gray-500 text-xs mb-3">※ ノード名は「固定する量の頭文字」から来ている（PQノード = P と Q を固定するからPQノード）</p>
+
+      <div class="overflow-x-auto mb-4">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-100">
+              <th class="text-left p-3 font-bold text-gray-700 rounded-tl-lg">ノードの種類</th>
+              <th class="text-left p-3 font-bold text-gray-700">固定する値（入力）</th>
+              <th class="text-left p-3 font-bold text-gray-700 rounded-tr-lg">計算で求める値（出力）</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr class="hover:bg-gray-50">
+              <td class="p-3 font-medium text-gray-800">PQノード<br><span class="text-xs text-gray-500">一般の負荷母線など</span></td>
+              <td class="p-3 text-blue-700 text-xs">有効電力 P（仕事する電力）<br>無効電力 Q（電圧を保つ電力）</td>
+              <td class="p-3 text-yellow-700 text-xs">電圧 |V|（大きさ）<br>位相角 θ（ズレ角）</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="p-3 font-medium text-gray-800">PVノード<br><span class="text-xs text-gray-500">発電機母線など</span></td>
+              <td class="p-3 text-blue-700 text-xs">有効電力 P<br>電圧の大きさ |V|</td>
+              <td class="p-3 text-yellow-700 text-xs">無効電力 Q<br>位相角 θ</td>
+            </tr>
+            <tr class="bg-purple-50">
+              <td class="p-3 font-bold text-purple-800">スイングノード<br><span class="text-xs text-purple-600 font-normal">基準母線（1つだけ）</span></td>
+              <td class="p-3 text-blue-700 text-xs font-medium">電圧の大きさ |V|<br><strong>位相角 θ = 0（これが「基準」)</strong></td>
+              <td class="p-3 text-yellow-700 text-xs font-medium"><strong>有効電力 P ← 調整項</strong><br>無効電力 Q</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-5">
+        <div class="font-bold text-purple-800 mb-2 flex items-center gap-2">
+          <i data-lucide="key" class="w-4 h-4"></i>
+          ここが核心
+        </div>
+        <p class="text-gray-700 text-sm">
+          スイングノードだけが <strong>θ を固定（= 0）</strong> することで「位相の基準点」を提供する。<br>
+          その代わり、スイングノードの <strong>P・Q は固定しない</strong>。
+          全ノードの解が求まった後、系統全体の「発電 = 消費 + 損失」が成立するように P・Q が決まる。
+        </p>
+      </div>
+
+      <!-- 計算の流れ（簡略版） -->
+      <h3 class="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">
+        <i data-lucide="arrow-right" class="w-4 h-4 text-blue-500"></i>
+        計算の流れ（4ステップ）
+      </h3>
+      <div class="space-y-2">
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">1</span>
+            初期値を仮に設定する
+          </div>
+          <p class="text-gray-700 text-xs">全母線の電圧・位相角に初期値を与える（スイングノードの θ = 0 だけは絶対に動かさない）</p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">2</span>
+            「今の解」でのズレを計算する
+          </div>
+          <p class="text-gray-700 text-xs">
+            「今の電圧・位相角から計算した電力」と「指定した電力」のズレ（ΔP, ΔQ）を各母線で計算する。<br>
+            <span class="text-red-600">→ これが「反復残差（潮流誤差）」。スイングノードに溜まるのではなく、<strong>全母線のズレが対象</strong>。</span>
+          </p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">3</span>
+            修正して繰り返す（収束するまで）
+          </div>
+          <p class="text-gray-700 text-xs">ズレが十分小さくなるまで繰り返す（「収束」）。収束しなければ解が得られない。スイングの θ は動かさない。</p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-blue-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">4</span>
+            収束後：スイングノードの P・Q を求める
+          </div>
+          <p class="text-gray-700 text-xs">
+            全母線の解（V, θ）が決まった後、スイングノードの P・Q を計算で求める。<br>
+            <span class="text-green-600">→ このP は <strong>「他の発電機・負荷の全合計との差（損失も含む）を埋める発電量」</strong>。誤差ではなく正当な解の一部。</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 3: よくある誤解
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">よくある誤解</h2>
+          <p class="text-gray-500">なぜその誤解が生まれるか、正しくはどう理解するか</p>
+        </div>
+      </div>
+
+      <!-- 誤解1 -->
+      <div class="mb-6">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3 text-sm">
+          <strong class="text-amber-800">誤解が生まれる理由：</strong>
+          <span class="text-gray-700">
+            「スイング（swing）」「スラック（slack = ゆるみ・余裕）」という名前から
+            「余分なものを受け取って消す場所」というイメージが生まれやすい。
+            また、スイングノードの P が「後から決まる」ことを「誤差が流れ込む」と読み違えやすい。
+          </span>
+        </div>
+
+        <div class="wrong-box">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700 text-sm">よくある誤解</span>
+          </div>
+          <p class="text-gray-800 text-sm">「潮流計算で発生した誤差（潮流誤差）は、スイングノードで吸収・相殺されるから需給バランスは常に一致する」</p>
+        </div>
+
+        <div class="flex justify-center items-center gap-2 my-2 text-gray-400 text-xs">
+          <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          <span>正しくはこう理解する</span>
+          <i data-lucide="arrow-down" class="w-4 h-4"></i>
+        </div>
+
+        <div class="correct-box">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700 text-sm">正しい理解（2つに分けて考える）</span>
+          </div>
+          <div class="space-y-3 text-sm">
+            <div class="bg-white rounded-lg p-3 border border-green-200">
+              <div class="font-bold text-green-800 mb-1">①「反復残差（潮流誤差）」について</div>
+              <p class="text-gray-700 text-xs">
+                計算途中のズレ（ΔP, ΔQ）はスイングノードに「貼り付けられる」のではなく、
+                <strong>全母線のズレが繰り返し修正されてゼロに近づく（収束）</strong>のが正しい仕組み。
+                収束しなければ解全体が得られない。スイングノードが代わりに処理するわけではない。
+              </p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border border-green-200">
+              <div class="font-bold text-green-800 mb-1">②スイングノードのP（発電量）について</div>
+              <p class="text-gray-700 text-xs">
+                収束後に決まるスイングノードのPは「誤差」ではなく
+                <strong>「他の全発電機・全負荷の指定値と損失を合わせて、電力収支を成立させるために必要な発電量」</strong>。
+                会計で「9人の費用が決まった後に幹事が払う残り分」が「誤差」でないのと同じ。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 誤解2: OPFのスラック変数との混同（折りたたみ） -->
+      <details>
+        <summary>
+          <i data-lucide="info" class="w-4 h-4 text-slate-500"></i>
+          補足：「スラック変数」との混同について（OPFを知っている方向け）
+        </summary>
+        <div class="det-body">
+          <p class="text-gray-600 text-sm mb-3">
+            最適潮流計算（OPF）で使われる「スラック変数」（制約違反量を数値で表す変数）と、
+            潮流計算の「スラックノード（スイングノード）」は<strong>全く別の概念</strong>です。
+            どちらも「スラック」という言葉を使うため混同しやすいです。
+          </p>
+          <div class="grid md:grid-cols-2 gap-3 text-xs">
+            <div class="bg-slate-50 rounded-lg p-3 border">
+              <div class="font-bold text-gray-700 mb-1">潮流計算の「スラックノード」</div>
+              <div class="text-gray-600">θ・|V| を固定した<strong>基準母線</strong>。P・Q が後から決まる。母線の一種。</div>
+            </div>
+            <div class="bg-slate-50 rounded-lg p-3 border">
+              <div class="font-bold text-gray-700 mb-1">OPFの「スラック変数」</div>
+              <div class="text-gray-600">制約条件の違反量を表す<strong>数値変数</strong>（数理最適化の用語）。母線とは無関係。</div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- ==============================
+         Section 4: 人への説明まとめ
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">人への説明まとめ</h2>
+          <p class="text-gray-500">「スイングノードで誤差が吸収されるのでは？」への回答</p>
+        </div>
+      </div>
+
+      <div class="summary-box mb-4">
+        <div class="text-sm opacity-75 mb-2 flex items-center gap-1">
+          <i data-lucide="clock" class="w-4 h-4"></i>
+          30秒バージョン（そのまま使える）
+        </div>
+        <p class="text-base leading-loose">
+          「スイングノードは<strong>位相角 θ を 0 に固定した計算の基準点</strong>です。電子回路のグラウンドと同じです。<br>
+          潮流計算では、スイングノードの θ・電圧は固定して他の値を求め、
+          最後に<strong>電力収支を閉じるためのスイングノードの発電量（P）が決まります</strong>。<br>
+          これは誤差ではなく、系統全体の『発電 = 消費 + 損失』を成立させる正当な値です。<br>
+          計算の途中の誤差（残差）はスイングノードに集まるのではなく、<strong>全母線で同時にゼロに収束させます</strong>。」
+        </p>
+      </div>
+
+      <!-- 顧客質問への回答 -->
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-4">
+        <div class="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+          <i data-lucide="help-circle" class="w-5 h-5"></i>
+          「潮流誤差はスイングノードで吸収されるから需給バランスは一致するのでは？」への回答
+        </div>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2">
+            <i data-lucide="check" class="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5"></i>
+            <span>「需給バランスが収束解で一致する」こと自体は<strong>正しい</strong></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="x" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5"></i>
+            <span>「スイングノードが誤差を吸収する」という<strong>理由づけは不正確</strong></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check" class="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5"></i>
+            <span><strong>正確な理由：</strong> スイングノードの発電量 P を「未指定のまま計算で決める」という定式化により、収束すれば系統の電力収支が自動的に成立するから</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 理解度チェック -->
+      <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-700 mb-3 flex items-center gap-2">
+          <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-500"></i>
+          理解度チェック（自問自答）
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>スイングノードで「固定する値」と「計算で決まる値」をそれぞれ言えるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「スイングノードが誤差を吸収する」という誤解が生まれる理由を説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>計算中の残差（ΔP, ΔQ）はどのように処理されるか（スイングに集まるのか？全体で収束するのか？）説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>グラウンドのアナロジーと幹事のアナロジーを使って「2つの側面」を説明できるか？</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-400">
+    電力系統概念図解 — スイングノードと潮流誤差の関係
+  </footer>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

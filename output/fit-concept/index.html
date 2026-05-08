@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIT制度とは ─ 電力市場制度図解</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%); }
+    .section-card {
+      background: white; border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      padding: 2rem; margin-bottom: 2rem;
+    }
+    .term-card {
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+      border-left: 4px solid #8b5cf6;
+      padding: 1rem 1.25rem; border-radius: 0.5rem; margin: 0.5rem 0;
+    }
+    .analogy-orange {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-left: 4px solid #f97316;
+      padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 0.75rem 0;
+    }
+    .analogy-sky {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0ea5e9;
+      padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin: 0.75rem 0;
+    }
+    .mechanism-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-left: 4px solid #3b82f6;
+      padding: 1.1rem 1.4rem; border-radius: 0.75rem; margin: 0.6rem 0;
+    }
+    .wrong-box {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-left: 4px solid #ef4444;
+      padding: 1rem 1.5rem; border-radius: 0.75rem; margin: 0.5rem 0;
+    }
+    .correct-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #22c55e;
+      padding: 1rem 1.5rem; border-radius: 0.75rem; margin: 0.5rem 0;
+    }
+    .summary-box {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      color: white; padding: 1.75rem 2rem; border-radius: 1rem; margin: 1rem 0;
+    }
+    .flow-actor {
+      border-radius: 0.75rem; padding: 0.75rem 1rem;
+      text-align: center; font-weight: 700; font-size: 0.85rem;
+      min-width: 100px;
+    }
+    .actor-gen    { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+    .actor-util   { background: #dbeafe; border: 2px solid #2563eb; color: #1e3a8a; }
+    .actor-user   { background: #fef9c3; border: 2px solid #ca8a04; color: #713f12; }
+    .actor-nation { background: #f3e8ff; border: 2px solid #9333ea; color: #581c87; }
+    .actor-pool   { background: #fce7f3; border: 2px solid #db2777; color: #831843; }
+    details > summary {
+      cursor: pointer; list-style: none;
+      padding: 0.6rem 1rem; background: #f1f5f9; border-radius: 0.5rem;
+      font-weight: 600; color: #475569; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary { border-radius: 0.5rem 0.5rem 0 0; }
+    details > .det-body {
+      border: 1px solid #e2e8f0; border-top: none;
+      border-radius: 0 0 0.5rem 0.5rem; padding: 1rem;
+      font-size: 0.9rem; color: #374151;
+    }
+    .tooltip-def {
+      border-bottom: 1px dashed #9333ea; color: #7c3aed; cursor: help;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+
+  <header class="header-gradient text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="bg-white/20 text-white text-sm font-medium px-3 py-1 rounded-full">電力市場制度図解</span>
+        <span class="bg-green-400/50 text-white text-sm font-medium px-3 py-1 rounded-full">自己学習用</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">FIT制度とは</h1>
+      <p class="mt-2 text-lg opacity-90 font-medium">固定価格買取制度（Feed-in Tariff）</p>
+      <p class="mt-1 text-sm opacity-80">再エネ電気を市場より高い固定価格で買い取り、そのコストを電気ユーザー全員で薄く負担する仕組み</p>
+      <p class="mt-2 text-sm opacity-70">用語の確認 → 直感 → 仕組み（お金の流れ）→ よくある誤解 の順で積み上げます</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- ==============================
+         Section 0: 先に用語をおさえる
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="book-marked" class="w-6 h-6 text-purple-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">先に用語をおさえる</h2>
+          <p class="text-gray-500">この用語を押さえると全体像がつかめる</p>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="sun" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">再生可能エネルギー（再エネ）</div>
+            <p class="text-gray-700 text-sm mt-1">
+              太陽光・風力・水力・地熱など、自然の力で繰り返し補充できるエネルギー源。
+              CO₂を出さず燃料費がかからない一方、<strong>天候に左右されて発電量が変動する</strong>特性がある。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="zap" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">kWh（キロワットアワー）</div>
+            <p class="text-gray-700 text-sm mt-1">
+              電気の<strong>量（使用量・発電量）</strong>の単位。
+              1kW（1,000ワット）の電気を1時間使うと1kWh。
+              一般家庭の月間使用量は300〜400kWh程度。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="bar-chart-2" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">電力市場（電力取引所）</div>
+            <p class="text-gray-700 text-sm mt-1">
+              電気を売買する「市場」。株式市場と同様に、需要と供給のバランスによって価格が変動する。
+              発電事業者が「市場で電気を売る」場合は、このリアルタイムな変動価格で取引する。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card">
+        <div class="flex items-start gap-3">
+          <i data-lucide="circle-dollar-sign" class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <div class="font-bold text-purple-700">調達価格（FIT単価）</div>
+            <p class="text-gray-700 text-sm mt-1">
+              FIT制度で国が定める<strong>「再エネ電気の買取価格」</strong>。
+              電力市場の変動価格ではなく、国が電源の種類・規模ごとに毎年設定する「政策価格」。
+              市場価格より高く設定されることが多い。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 1: まず直感でつかむ
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-orange-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず直感でつかむ</h2>
+          <p class="text-gray-500">2つのアナロジーでFIT制度の構造をつかむ</p>
+        </div>
+      </div>
+
+      <!-- アナロジー1: FIT全体 -->
+      <div class="mb-2 bg-slate-100 rounded-lg px-4 py-2 inline-block">
+        <span class="font-bold text-slate-700 text-sm">側面① FIT制度の全体構造</span>
+      </div>
+      <div class="analogy-orange">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="tractor" class="w-5 h-5 text-orange-600"></i>
+          <span class="font-bold text-orange-800">「新規農家を守る最低保証価格制度」</span>
+        </div>
+        <p class="text-gray-700 text-sm mb-3">
+          新規農家（再エネ発電事業者）が作った農産物（電気）を、農協（電力会社）が
+          <strong>市場価格より高い固定価格で必ず買い取る</strong>と約束します。<br>
+          農家は「いくらで売れるか」という不安なく設備投資できます。
+          その差額（市場価格を超えた分）は、スーパーで野菜を買う消費者全員が「農業振興費」として
+          <strong>少額ずつ負担</strong>します。
+        </p>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-orange-100 rounded p-2 font-bold text-center">農業の世界</div>
+          <div class="bg-orange-100 rounded p-2 font-bold text-center">FIT制度の世界</div>
+          <div class="bg-white rounded p-2 border border-orange-200">新規農家（設備投資リスクあり）</div>
+          <div class="bg-white rounded p-2 border border-orange-200">再エネ発電事業者</div>
+          <div class="bg-white rounded p-2 border border-orange-200">農産物（天候で量が変わる）</div>
+          <div class="bg-white rounded p-2 border border-orange-200">再エネ電気（天候で変動）</div>
+          <div class="bg-white rounded p-2 border border-orange-200">農協が市場価格より高く買い取る</div>
+          <div class="bg-white rounded p-2 border border-orange-200">電力会社が固定の調達価格で買い取る</div>
+          <div class="bg-white rounded p-2 border border-orange-200">消費者が農業振興費を負担</div>
+          <div class="bg-white rounded p-2 border border-orange-200">消費者が再エネ賦課金を負担</div>
+          <div class="bg-white rounded p-2 border border-orange-200">国が買取保証の価格を決める</div>
+          <div class="bg-white rounded p-2 border border-orange-200">国（経産大臣）が調達価格を毎年決める</div>
+        </div>
+      </div>
+
+      <!-- アナロジー2: 賦課金 -->
+      <div class="mt-4 mb-2 bg-slate-100 rounded-lg px-4 py-2 inline-block">
+        <span class="font-bold text-slate-700 text-sm">側面② 再エネ賦課金の仕組み</span>
+      </div>
+      <div class="analogy-sky">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="users" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-bold text-sky-800">「インフラ整備コストを利用者全員で薄く分担」</span>
+        </div>
+        <p class="text-gray-700 text-sm mb-3">
+          高速道路を新しく建設する費用を、全国の利用者が通行料として薄く分担するように、
+          FIT制度では「再エネ普及のための政策コスト」を、
+          <strong>電気を使う人全員がkWhに応じて少しずつ負担</strong>する仕組みです。<br>
+          <strong>自分が再エネを使っているかどうかに関係なく</strong>、電気を使う全員が対象です。
+        </p>
+        <div class="bg-sky-50 rounded-lg p-3 text-xs text-gray-700 border border-sky-200">
+          <div class="font-bold text-sky-700 mb-1">賦課金の計算イメージ</div>
+          <div class="font-mono bg-slate-800 text-green-300 rounded p-2 mt-1">
+            月々の賦課金 = 電気使用量（kWh）× 賦課金単価（円/kWh）<br>
+            例：300kWh × 4.0円/kWh = 1,200円/月
+          </div>
+          <p class="mt-2 text-gray-500">※ 賦課金単価は年度ごとに国が設定（2026年度頃は約4円/kWh程度）</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 2: 仕組みを理解する（お金の流れ）
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-branch" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">仕組みを理解する</h2>
+          <p class="text-gray-500">4者の役割とお金・電気の流れ</p>
+        </div>
+      </div>
+
+      <!-- 4者の役割 -->
+      <h3 class="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">
+        <i data-lucide="users" class="w-4 h-4 text-blue-500"></i>
+        登場人物と役割
+      </h3>
+      <div class="grid md:grid-cols-2 gap-3 mb-6">
+        <div class="rounded-xl p-4 border-2 border-green-300 bg-green-50">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="sun" class="w-5 h-5 text-green-600"></i>
+            <span class="font-bold text-green-800">① 再エネ発電事業者</span>
+          </div>
+          <p class="text-gray-700 text-xs">太陽光・風力などの発電設備を持つ事業者。国の認定（FIT認定）を受けて、<strong>調達価格（FIT単価）で電気を売る</strong>権利を得る。長期（例: 20年）の価格保証のもと、投資回収の見通しが立てられる。</p>
+        </div>
+        <div class="rounded-xl p-4 border-2 border-blue-300 bg-blue-50">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="building-2" class="w-5 h-5 text-blue-600"></i>
+            <span class="font-bold text-blue-800">② 電力会社（買取・送配電を担う事業者）</span>
+          </div>
+          <p class="text-gray-700 text-xs">
+            法律に基づき、再エネ電気を<strong>調達価格で買い取る義務</strong>を負う。
+            <br>
+            <span class="text-gray-500 text-xs mt-1 block">
+              ※「送配電（電気を家に届けるインフラ）」を担う会社が主な対象。小売とは別会社になっていることもある（2016年の電力自由化後に分離）。
+            </span>
+          </p>
+        </div>
+        <div class="rounded-xl p-4 border-2 border-yellow-300 bg-yellow-50">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="home" class="w-5 h-5 text-yellow-600"></i>
+            <span class="font-bold text-yellow-800">③ 電気利用者（家庭・事業者）</span>
+          </div>
+          <p class="text-gray-700 text-xs">電気代に<strong>再エネ賦課金が上乗せ</strong>されて請求される。自分が再エネ契約かどうかに関係なく、<strong>電気を使う量（kWh）に比例して</strong>賦課金を負担する。</p>
+        </div>
+        <div class="rounded-xl p-4 border-2 border-purple-300 bg-purple-50">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="landmark" class="w-5 h-5 text-purple-600"></i>
+            <span class="font-bold text-purple-800">④ 国（経済産業大臣）</span>
+          </div>
+          <p class="text-gray-700 text-xs">制度のルールを作り、電源の種類ごとに<strong>調達価格（FIT単価）</strong>と調達期間、および<strong>賦課金単価</strong>を毎年設定する。国自身は発電所と直接売買契約をするわけではない。</p>
+        </div>
+      </div>
+
+      <!-- お金の流れ図（改訂版） -->
+      <h3 class="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">
+        <i data-lucide="arrow-right" class="w-4 h-4 text-blue-500"></i>
+        お金と電気の流れ（全体像）
+      </h3>
+      <p class="text-xs text-gray-500 mb-3">
+        「調達価格での買取」と「賦課金による費用回収」は<strong>別々の流れ</strong>です。まず電力会社が高い固定価格で買い取り、その費用を消費者からの賦課金で補填する構造です。
+      </p>
+
+      <!-- ステップ1: 電気の流れ -->
+      <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-3">
+        <div class="text-xs font-bold text-slate-600 mb-3 flex items-center gap-1">
+          <i data-lucide="zap" class="w-3 h-3 text-yellow-500"></i>
+          Step 1：電気の流れ
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <div class="flow-actor actor-gen">再エネ<br>発電事業者</div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 text-yellow-500"></i>
+            <span class="text-yellow-600 font-medium text-xs">電気を供給</span>
+          </div>
+          <div class="flow-actor actor-util">電力会社<br>（送配電網）</div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 text-yellow-500"></i>
+            <span class="text-yellow-600 font-medium text-xs">電気を届ける</span>
+          </div>
+          <div class="flow-actor actor-user">電気<br>利用者</div>
+        </div>
+        <p class="text-xs text-slate-400 mt-2 text-center">※ 送配電網 = 電気を運ぶ全国の電線ネットワーク</p>
+      </div>
+
+      <!-- ステップ2: 買取のお金 -->
+      <div class="bg-green-50 rounded-xl p-4 border border-green-200 mb-3">
+        <div class="text-xs font-bold text-green-700 mb-3 flex items-center gap-1">
+          <i data-lucide="circle-dollar-sign" class="w-3 h-3 text-green-600"></i>
+          Step 2：電力会社が固定価格で買い取る（調達価格は市場価格より高い）
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <div class="flow-actor actor-util">電力会社</div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 text-green-500"></i>
+            <span class="text-green-700 font-medium text-xs">調達価格で支払い</span>
+            <span class="text-green-600 text-xs">（FIT単価×発電量）</span>
+          </div>
+          <div class="flow-actor actor-gen">再エネ<br>発電事業者</div>
+        </div>
+        <p class="text-xs text-green-600 mt-2 text-center bg-green-100 rounded px-2 py-1">
+          ← この「市場価格より高い買取価格」が、電力会社にとってのコスト超過分になる
+        </p>
+      </div>
+
+      <!-- ステップ3: 賦課金で補填 -->
+      <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200 mb-3">
+        <div class="text-xs font-bold text-yellow-700 mb-3 flex items-center gap-1">
+          <i data-lucide="circle-dollar-sign" class="w-3 h-3 text-yellow-600"></i>
+          Step 3：消費者が賦課金を払い、電力会社のコスト超過分を補填する
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="flow-actor actor-user">電気<br>利用者</div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 text-yellow-500"></i>
+            <span class="text-yellow-700 font-medium text-xs">電気代＋賦課金</span>
+            <span class="text-yellow-600 text-xs">（kWh×単価）</span>
+          </div>
+          <div class="flow-actor actor-util">電力会社</div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 text-yellow-500"></i>
+            <span class="text-yellow-700 font-medium text-xs">超過コストを</span>
+            <span class="text-yellow-600 text-xs">賦課金で補填</span>
+          </div>
+          <div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-center text-xs">
+            <div class="font-bold text-yellow-800">買取コスト</div>
+            <div class="text-yellow-600">（調達価格と<br>市場価格の差額）</div>
+          </div>
+        </div>
+        <p class="text-xs text-yellow-700 mt-2 text-center bg-yellow-100 rounded px-2 py-1">
+          ← 「再エネ普及の政策コスト」を消費者全員が電気使用量に応じて薄く負担する仕組み
+        </p>
+      </div>
+
+      <!-- ステップ4: 国の役割 -->
+      <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+        <div class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1">
+          <i data-lucide="landmark" class="w-3 h-3 text-purple-600"></i>
+          Step 4（毎年）：国が価格のルールを設定する
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 text-xs">
+          <div class="flow-actor actor-nation">国<br>（経産大臣）</div>
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-1">
+              <i data-lucide="arrow-right" class="w-4 h-4 text-purple-400"></i>
+              <span class="bg-white border border-purple-200 rounded-lg px-3 py-1 text-purple-700 font-medium">調達価格（FIT単価）を設定</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <i data-lucide="arrow-right" class="w-4 h-4 text-purple-400"></i>
+              <span class="bg-white border border-purple-200 rounded-lg px-3 py-1 text-purple-700 font-medium">賦課金単価（円/kWh）を設定</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 3: FITが必要な理由
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="help-circle" class="w-6 h-6 text-green-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">なぜFITが必要か</h2>
+          <p class="text-gray-500">市場に任せるだけでは再エネが普及しない理由</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">問</span>
+            市場だけでは何が問題か
+          </div>
+          <p class="text-gray-700 text-xs">
+            太陽光発電所を建てるには数千万〜数億円の設備投資が必要。
+            しかし電力市場の価格は時間帯・季節によって変動し、将来の収入が読めない。
+            「投資回収できるか不明」な状況では、リスクを嫌った事業者が参入しない。
+          </p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-green-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">解</span>
+            FITで何が変わるか
+          </div>
+          <p class="text-gray-700 text-xs">
+            「20年間、1kWhあたり〇円で必ず買い取ります」という保証が入る。
+            事業者は「設備費をいつ回収できるか」が計算できるようになり、参入しやすくなる。
+            日本では2012年のFIT開始後、太陽光発電が急速に拡大した。
+          </p>
+        </div>
+        <div class="mechanism-box">
+          <div class="font-bold text-blue-800 text-sm mb-1 flex items-center gap-2">
+            <span class="bg-yellow-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0">注</span>
+            FITの「コスト」とトレードオフ
+          </div>
+          <p class="text-gray-700 text-xs">
+            「市場価格より高く買い取る」分のコストを誰かが負担しなければならない。
+            FITではこれを「国民全員（電気利用者）が使用量に応じて薄く負担」する設計にした。
+            これが<strong>「再エネ賦課金」</strong>として電気代に上乗せされる理由。<br>
+            再エネの普及が進むほど賦課金単価が上がる傾向があり、消費者負担が増えるというトレードオフもある。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section 4: よくある誤解
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">よくある誤解</h2>
+          <p class="text-gray-500">なぜその誤解が生まれるか、正しくはどう理解するか</p>
+        </div>
+      </div>
+
+      <!-- 誤解1 -->
+      <div class="mb-5">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2 text-xs text-amber-800">
+          <strong>誤解が生まれる理由：</strong>「国がFIT制度を作った」「国が価格を決めた」＝「国が電気を買っている」と混同しやすい。
+        </div>
+        <div class="wrong-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i><span class="font-bold text-red-700 text-sm">よくある誤解①</span></div>
+          <p class="text-sm text-gray-800">「国が再エネの電気を買っている」</p>
+        </div>
+        <div class="correct-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span class="font-bold text-green-700 text-sm">正しい理解</span></div>
+          <p class="text-sm text-gray-700">実際に電気を買う（お金を払う）のは<strong>電力会社</strong>。国は「いくらで買え」という<strong>価格と期間のルールを決める</strong>役割。国自身が発電所と売買契約するわけではない。</p>
+        </div>
+      </div>
+
+      <!-- 誤解2 -->
+      <div class="mb-5">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2 text-xs text-amber-800">
+          <strong>誤解が生まれる理由：</strong>電気代の明細に「〇〇円」と書いてある → 消費税のような「税」に見える。
+        </div>
+        <div class="wrong-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i><span class="font-bold text-red-700 text-sm">よくある誤解②</span></div>
+          <p class="text-sm text-gray-800">「再エネ賦課金は税金だ」</p>
+        </div>
+        <div class="correct-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span class="font-bold text-green-700 text-sm">正しい理解</span></div>
+          <p class="text-sm text-gray-700">賦課金は<strong>電気料金の中の「制度料金」</strong>（電気代の一項目）。消費税などの租税（国の歳入）とは別物。法律（再エネ特措法）に基づく電気代の上乗せ料金であり、再エネ買取のコスト精算に使われる。</p>
+        </div>
+      </div>
+
+      <!-- 誤解3 -->
+      <div class="mb-5">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2 text-xs text-amber-800">
+          <strong>誤解が生まれる理由：</strong>「自分は再エネプランを選んでいないから関係ない」と思いがち。
+        </div>
+        <div class="wrong-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i><span class="font-bold text-red-700 text-sm">よくある誤解③</span></div>
+          <p class="text-sm text-gray-800">「自分は再エネ契約じゃないから賦課金は払っていない」</p>
+        </div>
+        <div class="correct-box">
+          <div class="flex items-center gap-2 mb-1"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span class="font-bold text-green-700 text-sm">正しい理解</span></div>
+          <p class="text-sm text-gray-700">賦課金は<strong>電気を使う人全員</strong>が対象（原則）。再エネ電気を選んでいるかどうかは関係なく、電気を使った量（kWh）に比例して課される。「国民全体で薄く負担する」という設計思想による。</p>
+        </div>
+      </div>
+
+      <!-- 補足（FIPとの混同） -->
+      <details>
+        <summary>
+          <i data-lucide="info" class="w-4 h-4 text-slate-500"></i>
+          補足：FITと混同されやすい「FIP」との違い
+        </summary>
+        <div class="det-body">
+          <p class="text-gray-600 text-sm mb-2">
+            「FIT制度」を調べると必ず出てくる「FIP」という制度があります。似た名前ですが、仕組みが異なります（2022年頃から日本でも導入）。
+          </p>
+          <div class="grid md:grid-cols-2 gap-3 text-xs">
+            <div class="bg-orange-50 rounded-lg p-3 border border-orange-200">
+              <div class="font-bold text-orange-800 mb-1">FIT（固定価格買取）</div>
+              <p class="text-gray-600">市場価格に関係なく<strong>固定価格で買い取る</strong>。発電事業者に市場参加のインセンティブがなく、大量導入期向き。</p>
+            </div>
+            <div class="bg-sky-50 rounded-lg p-3 border border-sky-200">
+              <div class="font-bold text-sky-800 mb-1">FIP（プレミアム上乗せ）</div>
+              <p class="text-gray-600">市場で売った価格に<strong>不足分のプレミアムを上乗せ</strong>。市場と連動しており、事業者が市場を意識して運転するようになる。</p>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- ==============================
+         Section 5: 人への説明まとめ
+    ============================== -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">人への説明まとめ</h2>
+          <p class="text-gray-500">30秒で説明できる状態になる</p>
+        </div>
+      </div>
+
+      <div class="summary-box mb-4">
+        <div class="text-sm opacity-75 mb-2 flex items-center gap-1">
+          <i data-lucide="clock" class="w-4 h-4"></i>
+          30秒バージョン（そのまま使える）
+        </div>
+        <p class="text-base leading-loose">
+          「FIT制度とは、<strong>再生可能エネルギーで発電した電気を、国が定めた固定価格で電力会社が長期間買い取ることを義務付ける制度</strong>です。<br>
+          市場価格では投資回収が難しい再エネ事業者を支援するために、市場より高い価格を保証します。<br>
+          その差額のコストは<strong>再エネ賦課金</strong>として、電気を使う人全員が使用量に応じて負担する仕組みです。<br>
+          日本では2012年に始まり、太陽光発電の急速な普及につながりました。」
+        </p>
+      </div>
+
+      <!-- 理解度チェック -->
+      <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-700 mb-3 flex items-center gap-2">
+          <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-500"></i>
+          理解度チェック（自問自答）
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>FIT制度の「4者」（発電事業者・電力会社・消費者・国）の役割を説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「電力会社が固定価格で買い取る」→「消費者が賦課金で補填する」という2ステップを説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「再エネ賦課金は税金だ」という誤解を正しく訂正できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>FITがなぜ必要か（市場に任せると再エネが普及しない理由）を説明できるか？</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-400">
+    電力市場制度図解 — FIT制度（固定価格買取制度）
+  </footer>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

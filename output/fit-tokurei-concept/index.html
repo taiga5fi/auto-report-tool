@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIT特例制度1・2・3の違い - 電力市場制度図解</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+
+    .header-gradient {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #3730a3 100%);
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .analogy-box {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-left: 4px solid #f97316;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .analogy-it {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0ea5e9;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .mechanism-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-left: 4px solid #3b82f6;
+      padding: 1.25rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.75rem 0;
+    }
+
+    .misconception-wrong {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-left: 4px solid #ef4444;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .misconception-correct {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #22c55e;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      color: white;
+      padding: 1.75rem 2rem;
+      border-radius: 1rem;
+      margin: 1rem 0;
+    }
+
+    /* 特例制度カード */
+    .tokurei-card {
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border-width: 2px;
+      border-style: solid;
+      height: 100%;
+    }
+    .tokurei-1 {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-color: #2563eb;
+    }
+    .tokurei-2 {
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+      border-color: #7c3aed;
+    }
+    .tokurei-3 {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-color: #059669;
+    }
+    .tokurei-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .badge-1 { background: #2563eb; color: white; }
+    .badge-2 { background: #7c3aed; color: white; }
+    .badge-3 { background: #059669; color: white; }
+
+    /* フローノード */
+    .flow-node {
+      border-radius: 0.75rem;
+      padding: 0.6rem 1rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.8rem;
+      min-width: 90px;
+      line-height: 1.3;
+    }
+    .node-senden { background: #dbeafe; border: 2px solid #2563eb; color: #1e3a8a; }
+    .node-kouri  { background: #ede9fe; border: 2px solid #7c3aed; color: #3b0764; }
+    .node-hatsu  { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+    .node-fit    { background: #fef9c3; border: 2px solid #ca8a04; color: #713f12; }
+    .node-risk   { background: #fee2e2; border: 2px solid #ef4444; color: #7f1d1d; }
+
+    /* アクター説明 */
+    .actor-badge {
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* 比較表 */
+    .compare-table th {
+      background: #1e1b4b;
+      color: white;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .compare-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.85rem;
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #f8fafc; }
+    .cell-1 { background: #eff6ff; }
+    .cell-2 { background: #f5f3ff; }
+    .cell-3 { background: #f0fdf4; }
+
+    .key-diff {
+      background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+      border: 2px solid #ca8a04;
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    details > summary {
+      cursor: pointer; list-style: none;
+      padding: 0.6rem 1rem;
+      background: #f1f5f9;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary { border-radius: 0.5rem 0.5rem 0 0; }
+    details > .det-body {
+      border: 1px solid #e2e8f0;
+      border-top: none;
+      border-radius: 0 0 0.5rem 0.5rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    .arrow-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+
+  <!-- ヘッダー -->
+  <header class="header-gradient text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="bg-white/20 text-white text-sm font-medium px-3 py-1 rounded-full">電力市場制度図解</span>
+        <span class="bg-indigo-500/70 text-white text-sm font-medium px-3 py-1 rounded-full">FITインバランス特例</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">FIT特例制度1・2・3の違い</h1>
+      <p class="mt-2 text-lg opacity-90">「誰が発電計画を立て、誰がインバランスリスクを負うか」で分かれる3種類の特例</p>
+      <p class="mt-1 text-sm opacity-70">FIT = 固定価格買取制度（Feed-in Tariff）。再エネの電気を固定価格で長期買取する制度。</p>
+      <p class="mt-1 text-sm opacity-70">直感 → 仕組み → 比較 → よくある誤解 の順で理解を積み上げる</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション-1: 前提 インバランスと特例が必要な理由
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="info" class="w-6 h-6 text-slate-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">前提：なぜ「インバランス特例」が必要なのか</h2>
+          <p class="text-gray-500">2つのルールが矛盾しているから</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="clock" class="w-5 h-5 text-red-600"></i>
+            <span class="font-bold text-red-800">ルールA：計画値同時同量制度</span>
+          </div>
+          <p class="text-sm text-red-900">30分ごとに「計画した発電量」と「実際の発電量」を一致させなければならない。ズレると<strong>インバランス料金（ペナルティ的コスト）</strong>が発生する。</p>
+        </div>
+        <div class="p-4 bg-yellow-50 border-2 border-yellow-200 rounded-xl">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="sun" class="w-5 h-5 text-yellow-600"></i>
+            <span class="font-bold text-yellow-800">ルールB：FIT全量買取義務</span>
+          </div>
+          <p class="text-sm text-yellow-900">FIT電源の電気は全量をFIT価格で買い取らなければならない。太陽光・風力は天候次第で発電量が読めないため、「計画通りに発電しろ」と言っても不可能。</p>
+        </div>
+      </div>
+
+      <div class="flex justify-center mb-4">
+        <div class="flex items-center gap-3">
+          <i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i>
+          <span class="text-sm font-bold text-gray-600">この2つが矛盾する</span>
+          <i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i>
+        </div>
+      </div>
+
+      <div class="p-4 bg-indigo-50 border-2 border-indigo-300 rounded-xl">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="shield" class="w-5 h-5 text-indigo-600"></i>
+          <span class="font-bold text-indigo-800">解決策：FITインバランス特例制度</span>
+        </div>
+        <p class="text-sm text-indigo-900">FIT発電事業者の代わりに、<strong>一般送配電事業者または小売電気事業者が発電計画を立て、インバランスリスクを引き受ける</strong>。その状況に応じて3つの方式（特例制度1・2・3）に分かれる。</p>
+      </div>
+
+      <!-- 登場人物 -->
+      <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-700 mb-3 text-sm flex items-center gap-2">
+          <i data-lucide="users" class="w-4 h-4 text-slate-500"></i>
+          登場人物の整理
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-medium">
+          <span class="actor-badge bg-green-100 text-green-800 border border-green-300">FIT発電事業者：電気を作る（太陽光・風力など）</span>
+          <span class="actor-badge bg-blue-100 text-blue-800 border border-blue-300">一般送配電事業者：送電線を管理・計画策定を担う</span>
+          <span class="actor-badge bg-purple-100 text-purple-800 border border-purple-300">小売電気事業者：FIT電気を買い取って販売する</span>
+        </div>
+      </div>
+
+      <!-- 重要用語の定義 -->
+      <div class="mt-4 space-y-3">
+        <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+          <div class="font-bold text-amber-800 mb-1 text-sm flex items-center gap-2">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            重要用語①：交付金とは
+          </div>
+          <p class="text-sm text-amber-900">FIT電気を買い取る小売電気事業者・一般送配電事業者に対して、国（再エネ賦課金の仕組み）から支払われるお金。<br>
+          計算式：<strong>交付金 = FIT買取費用 − 回避可能費用 + インバランスリスク相当額</strong><br>
+          <span class="text-xs text-amber-700 mt-1 block">「回避可能費用」＝FIT電気を調達しなかったとしても発生したであろう市場調達コスト（控除する）。インバランスリスク分は「代わりにリスクを負ってもらったぶんの補填」として上乗せされる。</span></p>
+          <p class="text-xs text-amber-700 mt-2">→ 特例1と2の違いは<strong>この交付金のうちインバランスリスク分が誰の手元に残るか</strong>。特例1は一般送配電に精算して渡す、特例2は小売がそのまま受領する。</p>
+        </div>
+        <div class="p-4 bg-sky-50 border border-sky-200 rounded-xl">
+          <div class="font-bold text-sky-800 mb-1 text-sm flex items-center gap-2">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            重要用語②：発電BG（バランシンググループ）とは
+          </div>
+          <p class="text-sm text-sky-900">電力市場の計画値同時同量制度において、発電計画と実績を管理する「まとめ単位」のこと。<br>
+          ≒ ITで言う「名前空間」や「プロジェクト」。誰の発電か分かる場合はその発電所をBGに登録できるが、<strong>電源が特定されていないと「どのBGに入れるか決まらない」</strong>ため発電BGが作れない。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション0: 3行で把握
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="map" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず3行で把握する</h2>
+          <p class="text-gray-500">「電源が特定できるか」と「誰が計画を立てるか」の組み合わせ</p>
+        </div>
+      </div>
+
+      <div class="key-diff mb-5">
+        <div class="flex items-start gap-2">
+          <i data-lucide="key" class="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold text-amber-900">最重要の分岐点：「電源が特定できるか」</span><br>
+            <span class="text-sm text-amber-800">小売電気事業者が「このFIT電源（この発電所）の電気を買う」と特定して契約している場合 → 特例1 or 2<br>
+            電源が特定できない（誰の電気か分からない）場合 → 特例3（自動的に適用）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 特例1 -->
+        <div class="tokurei-card tokurei-1">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="tokurei-badge badge-1">1</span>
+            <div>
+              <div class="font-bold text-blue-900">電源特定あり</div>
+              <div class="text-xs text-blue-700">一般送配電が計画</div>
+            </div>
+          </div>
+          <p class="text-sm text-blue-900 mb-3">どの発電所の電気か特定されている。<strong>一般送配電事業者</strong>が発電計画を作成して小売に通知。</p>
+          <div class="text-xs bg-blue-100 rounded p-2 text-blue-800">
+            <strong>インバランスリスク：小売が負担</strong><br>
+            （一般送配電に精算して渡す）
+          </div>
+        </div>
+        <!-- 特例2 -->
+        <div class="tokurei-card tokurei-2">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="tokurei-badge badge-2">2</span>
+            <div>
+              <div class="font-bold text-purple-900">電源特定あり</div>
+              <div class="text-xs text-purple-700">小売が計画</div>
+            </div>
+          </div>
+          <p class="text-sm text-purple-900 mb-3">どの発電所の電気か特定されている。<strong>小売電気事業者</strong>が自ら発電計画を作成する。</p>
+          <div class="text-xs bg-purple-100 rounded p-2 text-purple-800">
+            <strong>インバランスリスク：小売が直接負担</strong><br>
+            （交付金をそのまま受領）
+          </div>
+        </div>
+        <!-- 特例3 -->
+        <div class="tokurei-card tokurei-3">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="tokurei-badge badge-3">3</span>
+            <div>
+              <div class="font-bold text-emerald-900">電源特定なし</div>
+              <div class="text-xs text-emerald-700">一般送配電が全担</div>
+            </div>
+          </div>
+          <p class="text-sm text-emerald-900 mb-3">電源が特定されないため発電BG（計画単位）が作れない。<strong>一般送配電事業者</strong>が計画もリスクも全部担う。</p>
+          <div class="text-xs bg-emerald-100 rounded p-2 text-emerald-800">
+            <strong>インバランスリスク：一般送配電が負担</strong><br>
+            （電源非特定のため自動適用）
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション1: まず直感でつかむ（アナロジー）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-orange-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">まず直感でつかむ</h2>
+          <p class="text-gray-500">知っているものに例えて理解する</p>
+        </div>
+      </div>
+
+      <!-- アナロジー1: 宅配便の配送計画 -->
+      <div class="analogy-box">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="package" class="w-5 h-5 text-orange-600"></i>
+          <span class="font-bold text-orange-800">例え話：「天気頼みの農家から野菜を仕入れる宅配便会社」</span>
+        </div>
+        <p class="text-gray-700 mb-3">
+          農家（FIT発電事業者）は「天気次第で収穫量が変わる」。宅配便会社（小売電気事業者）は「届く荷物を全部受け取らないといけない」。でも「何個届くか事前に申告しないといけない」（計画値同時同量）。
+        </p>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-2 text-gray-700 bg-blue-50 p-2 rounded">
+            <span class="tokurei-badge badge-1 w-6 h-6 text-sm flex-shrink-0">1</span>
+            <div><strong>特例1</strong>：物流センター本社（一般送配電）が「今日は天気が○○だから、この農家から△△個届く予定」と宅配便会社（小売）に教える。届かなかった場合の追加コストは宅配便会社が物流センターに精算。</div>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700 bg-purple-50 p-2 rounded">
+            <span class="tokurei-badge badge-2 w-6 h-6 text-sm flex-shrink-0">2</span>
+            <div><strong>特例2</strong>：宅配便会社（小売）が自分で「今日この農家から△△個来るはず」と予測して申告。外れた場合の追加コストも自分で全部負担。その代わり節約できたコストはそのまま自分の利益にできる。</div>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700 bg-emerald-50 p-2 rounded">
+            <span class="tokurei-badge badge-3 w-6 h-6 text-sm flex-shrink-0">3</span>
+            <div><strong>特例3</strong>：「どの農家からの荷物か分からない混載便」。誰の荷物か特定できないので、物流センター本社（一般送配電）が全体まとめて管理・責任を負う。</div>
+          </div>
+        </div>
+        <div class="mt-3 p-2 bg-orange-100 rounded text-xs text-orange-800">
+          ↔ 対応表：農家＝FIT発電事業者、物流センター本社＝一般送配電事業者、宅配便会社＝小売電気事業者、荷物＝電気<br>
+          ※ 特例1の「宅配便会社が精算」：物流センターが立て替えた追加費用（当日の急な車手配など）を後で宅配便会社が精算するイメージ。その費用は荷主（国民）からの委託料（交付金）に含まれているので最終的には補填される。
+        </div>
+      </div>
+
+      <!-- アナロジー2: 社内承認フロー -->
+      <div class="analogy-it">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="git-branch" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-bold text-sky-800">別の例え：社内の予算見積もり誰が出すか問題</span>
+        </div>
+        <p class="text-gray-700 mb-2">
+          「外部ベンダーの作業量は天候や状況次第で変わるが、事前に社内で工数を申請する義務がある」という状況に似ています。
+        </p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>特例1</strong>：PMO（一般送配電）が「このベンダーは今週Xh来る予定」と予測して発注部署（小売）に通知。ズレた場合の追加コストは発注部署が精算。</span>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>特例2</strong>：発注部署（小売）が自ら「今週Xh来るはず」と見積もって申請。ズレた場合の追加コストも自分持ちだが、節約できた分は部署の予算に残る。</span>
+          </div>
+          <div class="flex items-start gap-2 text-gray-700">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5"></i>
+            <span><strong>特例3</strong>：「どの部署への作業か割り振れない共通業務」。誰の案件か特定できないのでPMO（一般送配電）が全部まとめて管理・精算する。</span>
+          </div>
+        </div>
+        <div class="mt-3 p-2 bg-sky-100 rounded text-xs text-sky-800">
+          ↔ 対応表：外部ベンダー＝FIT発電事業者、PMO＝一般送配電事業者、発注部署＝小売電気事業者
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション2: 各制度の仕組みフロー図
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-branch" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">各制度の仕組みを追う</h2>
+          <p class="text-gray-500">「誰が何をするか」のフロー</p>
+        </div>
+      </div>
+
+      <!-- 特例制度1 フロー -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="tokurei-badge badge-1">1</span>
+          <h3 class="text-lg font-bold text-gray-800">特例制度1：一般送配電が計画を作り小売に通知</h3>
+        </div>
+        <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+          <!-- ステップ図 -->
+          <div class="flex flex-col md:flex-row items-center gap-2 mb-4 flex-wrap">
+            <div class="flow-node node-hatsu text-center">
+              FIT発電事業者<br><span class="font-normal text-xs">電気を発電</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-senden text-center">
+              一般送配電事業者<br><span class="font-normal text-xs">発電計画を作成・通知</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-kouri text-center">
+              小売電気事業者<br><span class="font-normal text-xs">計画を受け取り使用</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-risk text-center">
+              インバランス発生時<br><span class="font-normal text-xs">→ 小売が一般送配電に精算</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="mechanism-box py-2">
+              <span class="font-bold text-blue-800">① </span>一般送配電事業者がFIT太陽光・風力の発電量を<strong>前日6時に予測・計画値を通知</strong>（前々日16時にも仮通知あり）
+            </div>
+            <div class="mechanism-box py-2">
+              <span class="font-bold text-blue-800">② </span>小売電気事業者はその計画値をそのまま自社の発電計画に使う。自分で予測する必要がない。
+            </div>
+            <div class="mechanism-box py-2">
+              <span class="font-bold text-blue-800">③ </span>実際の発電量が計画とズレた場合、インバランス精算コストは<strong>小売電気事業者が一般送配電事業者に精算して渡す</strong>。<br>
+              <span class="text-xs text-blue-700">お金の流れ（2ステップ）：①国（賦課金）→小売に交付金が入る → ②小売がそのうちのインバランスリスク分を一般送配電に渡す。最終的には「交付金に含まれていた補填分を返す」イメージ。</span>
+            </div>
+          </div>
+          <div class="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-800">
+            <strong>選ぶメリット：</strong>自分で天気予報の計算をしなくていい。手間が少ない。再エネ受け入れの障壁が下がる。<br>
+            <strong>デメリット：</strong>一般送配電への精算分があるため、インバランスリスク相当の収益は手元に残らない。
+          </div>
+        </div>
+      </div>
+
+      <!-- 特例制度2 フロー -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="tokurei-badge badge-2">2</span>
+          <h3 class="text-lg font-bold text-gray-800">特例制度2：小売が自ら計画を立てる</h3>
+        </div>
+        <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+          <div class="flex flex-col md:flex-row items-center gap-2 mb-4 flex-wrap">
+            <div class="flow-node node-hatsu text-center">
+              FIT発電事業者<br><span class="font-normal text-xs">電気を発電</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-kouri text-center" style="border-color: #7c3aed; background: #ede9fe;">
+              小売電気事業者<br><span class="font-normal text-xs">自ら発電計画を作成</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-risk text-center">
+              インバランス発生時<br><span class="font-normal text-xs">→ 小売が直接精算</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #7c3aed;">
+              <span class="font-bold text-purple-800">① </span>小売電気事業者が<strong>自ら発電予測を行い</strong>、発電計画を作成する。
+            </div>
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #7c3aed;">
+              <span class="font-bold text-purple-800">② </span>実際の発電量がズレた場合、インバランスを<strong>小売電気事業者が直接精算</strong>する。
+            </div>
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #7c3aed;">
+              <span class="font-bold text-purple-800">③ </span>インバランスリスク相当の交付金は<strong>小売電気事業者がそのまま受領</strong>（特例1では一般送配電に精算する分が残るが、特例2では小売の手元に残る）
+            </div>
+          </div>
+          <div class="mt-3 p-2 bg-purple-100 rounded text-xs text-purple-800">
+            <strong>選ぶメリット：</strong>自分でコントロールしたい・より精度の高い予測ができる・交付金を最大化できる可能性がある小売向け。
+          </div>
+        </div>
+      </div>
+
+      <!-- 特例制度3 フロー -->
+      <div class="mb-2">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="tokurei-badge badge-3">3</span>
+          <h3 class="text-lg font-bold text-gray-800">特例制度3：電源が特定できない場合（自動適用）</h3>
+        </div>
+        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+          <div class="flex flex-col md:flex-row items-center gap-2 mb-4 flex-wrap">
+            <div class="flow-node node-hatsu text-center">
+              FIT発電事業者（複数）<br><span class="font-normal text-xs">誰の電気か不明</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-senden text-center" style="border-color: #059669; background: #dcfce7;">
+              一般送配電事業者<br><span class="font-normal text-xs">計画作成＋リスク全担</span>
+            </div>
+            <div class="arrow-right hidden md:flex"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+            <div class="arrow-right md:hidden flex"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="flow-node node-kouri text-center">
+              小売電気事業者<br><span class="font-normal text-xs">電源非特定で受け取る</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-emerald-100 rounded text-sm text-emerald-900 mb-3">
+            <strong>適用される状況：</strong>「どの発電所のFIT電気か特定しない形で相対供給する」ケース。<br>
+            <span class="text-xs text-emerald-700">※ 相対供給（あいたいきょうきゅう）＝市場（取引所）を経由せず、売り手と買い手が1対1で直接取引すること。ITで言う「直接API呼び出し」に対して「仲介なし」のイメージ。</span><br>
+            電源を特定しないと<strong>発電BG（バランシンググループ、計画の管理単位）が設定できない</strong>ため、個別の計画が立てられない。
+          </div>
+
+          <div class="space-y-2 text-sm">
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #059669;">
+              <span class="font-bold text-emerald-800">① </span>電源が特定されないため、小売電気事業者は「どの発電所の電気を買うか」を指定しない。
+            </div>
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #059669;">
+              <span class="font-bold text-emerald-800">② </span>一般送配電事業者がFIT電源全体をまとめて管理し、<strong>計画作成もインバランス精算も全て担う</strong>。
+            </div>
+            <div class="mechanism-box py-2" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #059669;">
+              <span class="font-bold text-emerald-800">③ </span>小売電気事業者にとってはインバランスリスクが生じない。ただし電源の選択権もない。
+            </div>
+          </div>
+          <div class="mt-3 p-2 bg-emerald-100 rounded text-xs text-emerald-800">
+            <strong>自動適用：</strong>特例1・2は小売が選ぶが、特例3は「電源特定なし」という状況で必然的に適用される。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション3: 比較表
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="table" class="w-6 h-6 text-purple-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">3制度を並べて比べる</h2>
+          <p class="text-gray-500">5つの観点で整理</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="compare-table w-full border-collapse rounded-xl overflow-hidden text-sm">
+          <thead>
+            <tr>
+              <th class="text-left" style="width: 24%;">観点</th>
+              <th class="text-center" style="width: 25%;">
+                <span class="tokurei-badge badge-1 w-6 h-6 text-sm mr-1">1</span>
+                特例制度1
+              </th>
+              <th class="text-center" style="width: 25%;">
+                <span class="tokurei-badge badge-2 w-6 h-6 text-sm mr-1">2</span>
+                特例制度2
+              </th>
+              <th class="text-center" style="width: 26%;">
+                <span class="tokurei-badge badge-3 w-6 h-6 text-sm mr-1">3</span>
+                特例制度3
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="search" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                電源の特定
+              </td>
+              <td class="cell-1">
+                <div class="font-bold text-blue-700">✓ 特定あり</div>
+                <div class="text-gray-600 text-xs mt-1">「この発電所の電気」と明確に契約している</div>
+              </td>
+              <td class="cell-2">
+                <div class="font-bold text-purple-700">✓ 特定あり</div>
+                <div class="text-gray-600 text-xs mt-1">「この発電所の電気」と明確に契約している</div>
+              </td>
+              <td class="cell-3">
+                <div class="font-bold text-emerald-700">✗ 特定なし</div>
+                <div class="text-gray-600 text-xs mt-1">誰の電気か特定しない相対供給。発電BG設定不可</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="pen-tool" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                発電計画を立てるのは
+              </td>
+              <td class="cell-1">
+                <div class="font-bold text-blue-700">一般送配電事業者</div>
+                <div class="text-gray-600 text-xs mt-1">前日6時に予測値を小売に通知する</div>
+              </td>
+              <td class="cell-2">
+                <div class="font-bold text-purple-700">小売電気事業者</div>
+                <div class="text-gray-600 text-xs mt-1">自分で予測・計画を作成する</div>
+              </td>
+              <td class="cell-3">
+                <div class="font-bold text-emerald-700">一般送配電事業者</div>
+                <div class="text-gray-600 text-xs mt-1">電源全体をまとめて管理</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="alert-circle" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                インバランスリスクを負うのは
+              </td>
+              <td class="cell-1">
+                <div class="font-bold text-blue-700">小売電気事業者</div>
+                <div class="text-gray-600 text-xs mt-1">一般送配電に精算して渡す（ただし交付金で補填）</div>
+              </td>
+              <td class="cell-2">
+                <div class="font-bold text-purple-700">小売電気事業者（直接）</div>
+                <div class="text-gray-600 text-xs mt-1">自分で直接精算。交付金はそのまま受領</div>
+              </td>
+              <td class="cell-3">
+                <div class="font-bold text-emerald-700">一般送配電事業者</div>
+                <div class="text-gray-600 text-xs mt-1">小売はインバランスリスクを負わない</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="settings" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                どうやって適用されるか
+              </td>
+              <td class="cell-1">
+                <div class="text-gray-700 text-xs"><strong>小売が選ぶ（年1回更新）</strong><br><span class="text-gray-500">一度選ぶと1年間は変更できない。状況に応じた柔軟な切り替えは不可。</span></div>
+              </td>
+              <td class="cell-2">
+                <div class="text-gray-700 text-xs"><strong>小売が選ぶ（年1回更新）</strong><br><span class="text-gray-500">同上。特例2を選ぶには予測・計画作成能力が必要。</span></div>
+              </td>
+              <td class="cell-3">
+                <div class="text-gray-700 text-xs"><strong>自動的に適用</strong>（電源特定なしの場合）</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-gray-700 bg-slate-50">
+                <i data-lucide="thumbs-up" class="w-3 h-3 inline mr-1 text-gray-500"></i>
+                どんな小売に向いているか
+              </td>
+              <td class="cell-1">
+                <div class="text-gray-700 text-xs">自分で予測しなくてよい。再エネ受け入れを始めたばかりの小売に向いている</div>
+              </td>
+              <td class="cell-2">
+                <div class="text-gray-700 text-xs">精度高く自分で管理したい・コスト最小化を追求したい積極的な小売向け</div>
+              </td>
+              <td class="cell-3">
+                <div class="text-gray-700 text-xs">電源を特定しない取引形態の場合に発生。選択の余地なし</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション4: よくある誤解
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">よくある誤解</h2>
+          <p class="text-gray-500">混同しやすいポイントと正しい理解</p>
+        </div>
+      </div>
+
+      <!-- 誤解1 -->
+      <div class="mb-6">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：「特例=発電事業者へのペナルティ免除」と思うと誰が何をするのか混乱する</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解①</span>
+          </div>
+          <p class="text-gray-700">「FIT特例制度とは、発電事業者がインバランスを起こしても罰せられない制度」</p>
+        </div>
+        <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i></div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">発電事業者がインバランスのコストを<strong>「誰かに代わりに負ってもらう」制度</strong>。インバランスそのものはなくならない（計画と実績はズレる）。インバランスコストを誰が最終的に負担するかが1・2・3で異なる。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：計画値同時同量は電力系統の安定に必要なルールであり、なくすことはできない。特例は「免除」ではなく「代替担当者を設ける」仕組み。</p>
+        </div>
+      </div>
+
+      <!-- 誤解2 -->
+      <div class="mb-6">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：1と3が両方「一般送配電が計画を立てる」ため混同しやすい</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解②</span>
+          </div>
+          <p class="text-gray-700">「特例1と特例3はどちらも一般送配電が計画を作るから実質同じ」</p>
+        </div>
+        <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i></div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">計画を立てるのは同じだが、<strong>インバランスリスクの帰属先が違う</strong>。特例1は「リスクは最終的に小売が精算」、特例3は「リスクも一般送配電が丸ごと持つ」。また特例3はそもそも電源が特定されていないという根本的な違いがある。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：「計画作成」と「リスク負担」は別の話。特例1・3とも計画は一般送配電だが、コストを最終的に誰が払うかが違う。</p>
+        </div>
+      </div>
+
+      <!-- 誤解3 -->
+      <div class="mb-2">
+        <div class="text-sm font-medium text-gray-500 mb-2">誤解が生まれる理由：「インバランス」という言葉を「電気の需給バランスの崩れ」と広義に解釈しがち</div>
+        <div class="misconception-wrong">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+            <span class="font-bold text-red-700">よくある誤解③</span>
+          </div>
+          <p class="text-gray-700">「インバランス特例＝停電や周波数変動を防ぐための制度」</p>
+        </div>
+        <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-5 h-5 text-gray-400"></i></div>
+        <div class="misconception-correct">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+            <span class="font-bold text-green-700">正しい理解</span>
+          </div>
+          <p class="text-gray-700">ここでの「インバランス」は<strong>コスト・精算の話</strong>。「計画値と実際の発電量のズレに対して発生する料金（精算コスト）を誰が払うか」という制度上の取り決め。停電防止は別の仕組み（調整力など）が担う。</p>
+          <p class="text-gray-500 text-sm mt-2">理由：電力系統の安定（物理）と、計画値精算（財務）は別レイヤーの話。インバランス特例は財務的な精算ルールの話。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         セクション5: 人への説明まとめ
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-indigo-600"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">人への説明まとめ</h2>
+          <p class="text-gray-500">30秒で説明するなら</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="text-sm opacity-75 mb-2">30秒バージョン（そのまま使える）</div>
+        <p class="text-lg font-medium leading-relaxed">
+          「FIT特例制度1・2・3は、再エネ発電事業者の代わりに誰が発電計画を立てインバランスリスクを負うかを定めた制度です。<br><br>
+          1と2は『どの発電所の電気か特定されている場合』で、1は一般送配電事業者が計画を作り、2は小売電気事業者が自分で作ります。<br>
+          3は『電源が特定できない場合』に自動的に適用され、一般送配電事業者が計画もリスクも全部引き受けます。<br><br>
+          選ぶのは小売電気事業者で、1か2かを年1回選択します。」
+        </p>
+      </div>
+
+      <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-700 mb-3 flex items-center gap-2">
+          <i data-lucide="help-circle" class="w-4 h-4 text-slate-500"></i>
+          理解度チェック（自問自答）
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「特例制度が必要な理由」（計画値同時同量とFIT全量買取の矛盾）を説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>特例1と2の違い（計画を作るのが誰か）を言えるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>特例3が自動適用される条件（電源が特定されない）を説明できるか？</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="square" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+            <span>「インバランスリスクを誰が負うか」が1・2・3でどう違うか言えるか？</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-400">
+    <p>FIT特例制度1・2・3の違い - 電力市場制度図解 | 個人学習用</p>
+    <p class="text-xs mt-1">FITインバランス特例制度（計画値同時同量とFIT全量買取の整合性を保つ仕組み）</p>
+  </footer>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
