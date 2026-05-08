@@ -16,6 +16,28 @@ const QUERIES = [
 ];
 
 /**
+ * Gemini API呼び出しを最大3回リトライするラッパー
+ */
+async function withRetry(fn, retries = 3, delayMs = 15000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const isRetryable =
+        err.message?.includes('503') ||
+        err.message?.includes('429') ||
+        err.message?.includes('overloaded');
+      if (isRetryable && i < retries - 1) {
+        console.log(`  ⏳ APIが混雑中、${delayMs / 1000}秒後にリトライ (${i + 1}/${retries - 1})...`);
+        await new Promise(r => setTimeout(r, delayMs));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
+/**
  * Brave Search APIを呼び出して検索結果を取得する
  */
 async function braveSearch(query, lang = 'en') {
@@ -68,7 +90,7 @@ ${result.extra_snippets.length > 0 ? `【追加抜粋】${result.extra_snippets.
 {"score": 数値, "reason": "理由を1文で"}
 `.trim();
 
-  const response = await model.generateContent(prompt);
+  const response = await withRetry(() => model.generateContent(prompt));
   const text = response.response.text().trim();
 
   // JSON部分だけ抽出
@@ -116,7 +138,7 @@ export async function searchAndScore() {
 
       scored.push({ ...result, score, reason });
 
-      // Gemini無料枠レート制限(10RPM)対策: 7秒待機
+      // Gemini無料枠レート制限対策: 7秒待機
       await new Promise(r => setTimeout(r, 7000));
 
       if (score === 10) {

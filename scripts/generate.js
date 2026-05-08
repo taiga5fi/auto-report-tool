@@ -118,8 +118,30 @@ ${articleSummaries}
 余計な説明文・コメントは一切不要です。
 `.trim();
 
+  /**
+   * リトライラッパー（503/429対応）
+   */
+  async function withRetry(fn, retries = 3, delayMs = 15000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await fn();
+      } catch (err) {
+        const isRetryable =
+          err.message?.includes('503') ||
+          err.message?.includes('429') ||
+          err.message?.includes('overloaded');
+        if (isRetryable && i < retries - 1) {
+          console.log(`  ⏳ APIが混雑中、${delayMs / 1000}秒後にリトライ (${i + 1}/${retries - 1})...`);
+          await new Promise(r => setTimeout(r, delayMs));
+        } else {
+          throw err;
+        }
+      }
+    }
+  }
+
   console.log('🤖 Gemini APIでHTML生成中...');
-  const result = await model.generateContent(prompt);
+  const result = await withRetry(() => model.generateContent(prompt));
   let html = result.response.text().trim();
 
   // コードブロック記法が含まれていた場合は除去
