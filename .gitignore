@@ -1,2 +1,6 @@
-output/*.html
+output/
+.claude/
+sample/
 deploy-history.log
+node_modules/
+.env
