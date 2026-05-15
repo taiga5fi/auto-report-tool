@@ -4,10 +4,6 @@ on:
   schedule:
     # JST 07:00 (UTC 22:00 前日)
     - cron: '0 22 * * *'
-    # JST 12:00 (UTC 03:00)
-    - cron: '0 3 * * *'
-    # JST 18:00 (UTC 09:00)
-    - cron: '0 9 * * *'
   # 手動テスト用（GitHub ActionsのUIから「Run workflow」ボタンで実行可能）
   workflow_dispatch:
 

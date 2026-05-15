@@ -1,4 +1,4 @@
-﻿/**
+/**
  * generate.js
  * スコアリング済み記事リストをGemini APIに渡し、
  * 以下テンプレートと同一の構造・デザインのHTMLを生成する。
@@ -26,7 +26,7 @@ function getDateStrings() {
 
 export async function generateHtml(articles) {
   const genai = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genai.getGenerativeModel({ model: 'gemini-2.0-flash' });
   const dates = getDateStrings();
 
   const articleSummaries = articles

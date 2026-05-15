@@ -1,4 +1,4 @@
-﻿/**
+/**
  * search.js
  * Brave Search APIで多言語検索し、Gemini APIで各結果を1〜10点スコアリングする。
  * 10点が出た時点で検索を停止し、top5件を返す。
@@ -116,7 +116,7 @@ async function braveSearch(query, lang = 'en') {
  * Gemini APIで記事を1〜10点でスコアリングする
  */
 async function scoreResult(genai, result) {
-  const model = genai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genai.getGenerativeModel({ model: 'gemini-2.0-flash' });
   const { topic } = getTodayTheme();
   const prompt = `
 あなたはレポート自動化の専門家です。以下の記事を「${topic}」という調査テーマへの有用性で1〜10点評価してください。
