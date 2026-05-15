@@ -539,18 +539,28 @@ ${articleSummaries}
 </html>
 `.trim();
 
-  async function withRetry(fn, retries = 3, delayMs = 15000) {
+  async function withRetry(fn, retries = 3, defaultDelayMs = 15000) {
     for (let i = 0; i < retries; i++) {
       try {
         return await fn();
       } catch (err) {
-        const isRetryable =
-          err.message?.includes('503') ||
-          err.message?.includes('429') ||
-          err.message?.includes('overloaded');
+        const is429 = err.message?.includes('429') || err.status === 429;
+        const is503 = err.message?.includes('503') || err.message?.includes('overloaded');
+
+        if (is429 && err.message?.includes('FreeTier') && err.message?.includes('PerDay')) {
+          console.error('  ❌ Gemini API の無料枠（日次）を使い切りました。明日以降に再実行してください。');
+          throw err;
+        }
+
+        const isRetryable = is429 || is503;
         if (isRetryable && i < retries - 1) {
-          console.log(`  ⏳ APIが混雑中、${delayMs / 1000}秒後にリトライ (${i + 1}/${retries - 1})...`);
-          await new Promise(r => setTimeout(r, delayMs));
+          const retryInfo = err.errorDetails?.find(d => d['@type']?.includes('RetryInfo'));
+          const apiDelayMs = retryInfo?.retryDelay
+            ? parseInt(retryInfo.retryDelay) * 1000
+            : null;
+          const waitMs = apiDelayMs ?? defaultDelayMs;
+          console.log(`  ⏳ APIが混雑中、${waitMs / 1000}秒後にリトライ (${i + 1}/${retries - 1})...`);
+          await new Promise(r => setTimeout(r, waitMs));
         } else {
           throw err;
         }
