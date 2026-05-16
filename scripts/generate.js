@@ -569,13 +569,23 @@ ${articleSummaries}
   }
 
   console.log('🤖 Gemini APIでHTML生成中...');
-  const result = await withRetry(() => model.generateContent(prompt));
-  let html = result.response.text().trim();
 
-  html = html.replace(/^```html\s*/i, '').replace(/\s*```$/, '');
-
-  if (!html.startsWith('<!DOCTYPE') && !html.startsWith('<html')) {
-    throw new Error('GeminiがHTMLを正しく返しませんでした');
+  let html;
+  try {
+    const result = await withRetry(() => model.generateContent(prompt));
+    html = result.response.text().trim();
+    html = html.replace(/^```html\s*/i, '').replace(/\s*```$/, '');
+    if (!html.startsWith('<!DOCTYPE') && !html.startsWith('<html')) {
+      throw new Error('GeminiがHTMLを正しく返しませんでした');
+    }
+  } catch (err) {
+    const isQuotaExhausted = err.status === 429 && err.message?.includes('FreeTier');
+    if (isQuotaExhausted) {
+      console.warn('  ⚠️ Gemini API クォータ超過。シンプルなHTMLにフォールバックします。');
+      html = generateFallbackHtml(articles, dates);
+    } else {
+      throw err;
+    }
   }
 
   const outDir = join('output', dates.dir);
@@ -585,6 +595,60 @@ ${articleSummaries}
   console.log(`✅ HTML生成完了: ${outPath}`);
 
   return { outDir, outPath, dates };
+}
+
+function generateFallbackHtml(articles, dates) {
+  const articleCards = articles.map((a, i) => `
+    <article style="background:#fff;border:1px solid #dfd6c9;border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:12px;font-weight:bold;background:#dceee9;color:#3d5a50;padding:2px 10px;border-radius:999px;">${i + 1}</span>
+        ${a.score > 0 ? `<span style="font-size:12px;color:#6b7583;">${a.score}/10点</span>` : ''}
+      </div>
+      <h2 style="font-size:16px;font-weight:bold;margin:0 0 8px;">
+        <a href="${escapeHtml(a.url)}" target="_blank" rel="noopener" style="color:#2d4a3e;text-decoration:underline;">${escapeHtml(a.title)}</a>
+      </h2>
+      <p style="font-size:14px;color:#4b5563;line-height:1.7;margin:0 0 8px;">${escapeHtml(a.description)}</p>
+      ${a.reason && a.score > 0 ? `<p style="font-size:12px;color:#6b7583;font-style:italic;">評価: ${escapeHtml(a.reason)}</p>` : ''}
+    </article>
+  `).join('');
+
+  return `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>自動レポート | ${dates.iso}</title>
+  <style>
+    body { font-family: 'Hiragino Maru Gothic ProN', sans-serif; background: #f6f3ee; color: #2c3648; margin: 0; padding: 0; }
+    header { background: #2d4a3e; color: #fff; padding: 32px 24px; }
+    header h1 { margin: 0 0 8px; font-size: 24px; }
+    header p { margin: 0; font-size: 14px; color: #d1e0dc; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
+    .notice { background: #fef9c3; border: 1px solid #fde047; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: #713f12; }
+    footer { text-align: center; font-size: 12px; color: #6b7583; padding: 24px; border-top: 1px solid #dfd6c9; }
+  </style>
+</head>
+<body>
+  <header>
+    <p style="font-size:12px;margin:0 0 8px;color:#d1e0dc;"><time datetime="${dates.iso}">${dates.ja}</time></p>
+    <h1>${escapeHtml(todayTheme.name)}</h1>
+    <p>テーマ: ${escapeHtml(todayTheme.topic)}</p>
+  </header>
+  <main>
+    <div class="notice">⚠️ Gemini API のクォータ超過により、簡易レポートで代替しています。明日以降は通常のレポートが配信されます。</div>
+    ${articleCards}
+  </main>
+  <footer>自動生成レポート — auto-report-tool by taiga5fi</footer>
+</body>
+</html>`;
+}
+
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 

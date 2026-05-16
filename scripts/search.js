@@ -168,7 +168,8 @@ ${result.extra_snippets.length > 0 ? `【追加抜粋】${result.extra_snippets.
 
 /**
  * メイン: 多言語検索 → スコアリング → top5を返す
- * 10点が出た時点で即停止
+ * 10点が出た時点で即停止。
+ * Gemini の日次クォータ超過時はスコアリングをスキップして検索結果のみ返す。
  */
 export async function searchAndScore() {
   const genai = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -177,6 +178,7 @@ export async function searchAndScore() {
 
   const scored = [];
   const seenUrls = new Set();
+  let scoringAvailable = true;
 
   for (const query of theme.queries) {
     const lang = /[ぁ-ん]/.test(query) ? 'ja' : 'en';
@@ -194,17 +196,32 @@ export async function searchAndScore() {
       if (seenUrls.has(result.url)) continue;
       seenUrls.add(result.url);
 
-      const { score, reason } = await scoreResult(genai, result);
-      console.log(`  [${score}/10] ${result.title.slice(0, 60)}`);
+      if (scoringAvailable) {
+        try {
+          const { score, reason } = await scoreResult(genai, result);
+          console.log(`  [${score}/10] ${result.title.slice(0, 60)}`);
+          scored.push({ ...result, score, reason });
 
-      scored.push({ ...result, score, reason });
+          // Gemini無料枠レート制限対策: 7秒待機
+          await new Promise(r => setTimeout(r, 7000));
 
-      // Gemini無料枠レート制限対策: 7秒待機
-      await new Promise(r => setTimeout(r, 7000));
-
-      if (score === 10) {
-        console.log('✅ 10点の記事を発見！検索を停止します。');
-        return sortAndLimit(scored);
+          if (score === 10) {
+            console.log('✅ 10点の記事を発見！検索を停止します。');
+            return sortAndLimit(scored);
+          }
+        } catch (err) {
+          const isQuotaExhausted = err.status === 429 && err.message?.includes('FreeTier');
+          if (isQuotaExhausted) {
+            scoringAvailable = false;
+            console.warn('  ⚠️ Gemini API クォータ超過。残りはスコアリングなしで収集します。');
+            scored.push({ ...result, score: 0, reason: 'クォータ超過のためスコアリング省略' });
+          } else {
+            throw err;
+          }
+        }
+      } else {
+        console.log(`  [スキップ] ${result.title.slice(0, 60)}`);
+        scored.push({ ...result, score: 0, reason: 'クォータ超過のためスコアリング省略' });
       }
     }
   }
